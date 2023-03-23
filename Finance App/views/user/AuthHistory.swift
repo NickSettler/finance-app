@@ -8,13 +8,30 @@
 import SwiftUI
 
 struct AuthHistory: View {
-    @StateObject private var viewModel = AuthHistoryViewModel()
+    @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel = AuthHistoryViewModel()
     
     var body: some View {
-        List {
-            ForEach(viewModel.items, id: \.id) { item in
-                Text("\(item.timestamp)")
+        VStack {
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Close")
+                }
+                
+                Spacer()
             }
+            .padding(.horizontal.union(.top))
+            
+            List {
+                ForEach(viewModel.items, id: \.id) { item in
+                    Text("\(item.timestamp.formatted(date: .long, time: .standard))")
+                }
+            }
+        }
+        .onAppear {
+            viewModel.handleViewAppear()
         }
     }
 }

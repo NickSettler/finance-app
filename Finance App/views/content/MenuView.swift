@@ -25,7 +25,8 @@ struct MenuView: View {
                 Text("Auth History")
             }
             .sheet(isPresented: $viewModel.isAuthHistoryShown) {
-                Text("HI")
+                viewModel.isAuthHistoryShown = false
+            } content: {
                 AuthHistory()
             }
         }

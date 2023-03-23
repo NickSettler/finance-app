@@ -6,8 +6,16 @@
 //
 
 import Foundation
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
-struct AuthHistoryItem : Identifiable {
-    var id: String
-    var timestamp: String
+struct AuthHistoryItem : Hashable, Codable {
+    @DocumentID var id: String?
+    var timestamp: Date
+    
+    init(id: String? = nil, timestamp: Timestamp) {
+        self.id = id
+        self.timestamp = timestamp.dateValue()
+    }
 }
