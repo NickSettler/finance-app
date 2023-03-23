@@ -10,10 +10,13 @@ import SwiftUI
 
 @MainActor class MenuViewModel : ObservableObject {
     @Published var isAuthHistoryShown : Bool = false
+    @Published var isUserMenuShown : Bool = false
     
     func toggleAuthHistory() {
-        //        withAnimation {
         self.isAuthHistoryShown.toggle()
-        //        }
+    }
+    
+    func toggleUserMenu() {
+        self.isUserMenuShown.toggle()
     }
 }

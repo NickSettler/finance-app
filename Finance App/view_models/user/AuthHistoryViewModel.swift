@@ -12,7 +12,9 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 @MainActor class AuthHistoryViewModel : ObservableObject {
-    @Published private(set) var items : [AuthHistoryItem] = []
+    @Published private(set) var items : [AuthHistoryItem] = [
+        .init(timestamp: .init(date: Date()))
+    ]
     
     private let db: Firestore
     

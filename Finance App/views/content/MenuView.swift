@@ -11,29 +11,15 @@ import FirebaseAuth
 struct MenuView: View {
     @StateObject private var viewModel = MenuViewModel()
     
-    var toolbar: ToolbarItemGroup<some View> {
-        ToolbarItemGroup(placement: .bottomBar) {
-            Button {
-                print("HI")
-            } label: {
-                Text("First")
-            }
-            
-            Button {
-                viewModel.toggleAuthHistory()
-            } label: {
-                Text("Auth History")
-            }
-            .sheet(isPresented: $viewModel.isAuthHistoryShown) {
-                viewModel.isAuthHistoryShown = false
-            } content: {
-                AuthHistory()
-            }
-        }
-    }
-    
     var body: some View {
-        NavigationView {
+        TabView {
+            
+            AuthHistory()
+                .tabItem {
+                    Image(systemName: "clock.fill")
+                    Text("Auth History")
+                }
+            
             VStack {
                 Text("Hello, World! You are logged in!")
                 Button {
@@ -47,9 +33,16 @@ struct MenuView: View {
                 }
                 .buttonStyle(.borderedProminent)
             }
-            .toolbar {
-                toolbar
+            .tabItem {
+                Image(systemName: "house.fill")
+                Text("Home")
             }
+            
+            UserMenu()
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
         }
     }
 }
