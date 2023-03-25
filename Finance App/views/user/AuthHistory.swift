@@ -11,14 +11,15 @@ struct AuthHistory: View {
     @StateObject var viewModel = AuthHistoryViewModel()
     
     var body: some View {
-        List {
-            ForEach(viewModel.items, id: \.id) { item in
-                Text("\(item.timestamp.formatted(date: .long, time: .standard))")
+            List {
+                ForEach(viewModel.items, id: \.id) { item in
+                    Text("\(item.timestamp.formatted(date: .long, time: .standard))")
+                }
             }
-        }
-        .onAppear {
-            viewModel.handleViewAppear()
-        }
+            .onAppear {
+                viewModel.handleViewAppear()
+            }
+            .refreshable(action: viewModel.handleRefresh)
     }
 }
 

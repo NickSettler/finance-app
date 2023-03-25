@@ -12,9 +12,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 @MainActor class AuthHistoryViewModel : ObservableObject {
-    @Published private(set) var items : [AuthHistoryItem] = [
-        .init(timestamp: .init(date: Date()))
-    ]
+    @Published private(set) var items : [AuthHistoryItem] = []
     
     private let db: Firestore
     
@@ -22,30 +20,24 @@ import FirebaseFirestoreSwift
         self.db = Firestore.firestore()
     }
     
+    private func updateItems() async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        do {
+            self.items = try await UserService.getAuthHistory(by: uid).get()
+            print("Got: \(self.items)")
+        } catch {
+            print("Error getting documents: \(error)")
+        }
+    }
+    
     func handleViewAppear() {
         Task {
-            let uid = Auth.auth().currentUser?.uid
-            
-            if (uid != nil) {
-                do {
-                    let items = try await self.db
-                        .collection(FirestoreCollection.USER_DATA.rawValue)
-                        .document(uid!)
-                        .collection(FirestoreCollection.AUTH_HISTORY.rawValue)
-                        .getDocuments()
-                    
-                    for document in items.documents {
-                        do {
-                            let item = try document.data(as: AuthHistoryItem.self)
-                            self.items.append(item)
-                        } catch {
-                            print(error)
-                        }
-                    }
-                } catch {
-                    print("Error getting documents: \(error)")
-                }
-            }
+            await updateItems()
         }
+    }
+    
+    @Sendable func handleRefresh() async {
+        await updateItems()
     }
 }

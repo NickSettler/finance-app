@@ -13,13 +13,6 @@ struct MenuView: View {
     
     var body: some View {
         TabView {
-            
-            AuthHistory()
-                .tabItem {
-                    Image(systemName: "clock.fill")
-                    Text("Auth History")
-                }
-            
             VStack {
                 Text("Hello, World! You are logged in!")
                 Button {
@@ -38,7 +31,7 @@ struct MenuView: View {
                 Text("Home")
             }
             
-            UserMenu()
+            UserMenuView()
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
