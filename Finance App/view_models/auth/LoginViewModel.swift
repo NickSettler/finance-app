@@ -23,31 +23,15 @@ import FirebaseFirestore
     }
     
     func signIn() {
-        Auth.auth().signIn(withEmail: emailValue, password: passwordValue) { [weak self] authResult, error in
-            if (error != nil) {
-                withAnimation {
-                    self?.error = error!.localizedDescription
-                }
+        Task {
+            do {
+                let authResult = try await Auth.auth().signIn(withEmail: emailValue, password: passwordValue)
                 
-                return
-            }
-            
-            let uid = authResult!.user.uid
-            
-            let doc = self!.db
-                .collection(FirestoreCollection.USER_DATA.rawValue)
-                .document(uid)
-                .collection(FirestoreCollection.AUTH_HISTORY.rawValue)
-                .document()
-            
-            doc.setData([
-                "timestamp": Timestamp(date: Date()),
-            ]) { err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    print("Document added with ID: \(doc.documentID)")
-                }
+                let uid = authResult.user.uid
+                
+                try await UserService.addAuthHistory(by: uid)
+            } catch {
+                print(error)
             }
         }
     }

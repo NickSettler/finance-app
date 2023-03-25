@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 struct UserService {
     static func getAuthHistory(by id: String) async -> Result<[AuthHistoryItem], Error> {
@@ -20,5 +21,23 @@ struct UserService {
         } catch {
             return .failure(error)
         }
+    }
+    
+    static func addAuthHistory(by id: String) async throws -> Result<Void, Error> {
+        let doc = FirebaseService.shared.database
+            .collection(FirestoreCollection.USER_DATA.rawValue)
+            .document(id)
+            .collection(FirestoreCollection.AUTH_HISTORY.rawValue)
+            .document()
+        
+        do {
+            try await doc.setData([
+                AuthHistoryItem.CodingKeys.timestamp.stringValue: Timestamp(date: Date()),
+            ])
+        } catch {
+            return .failure(error)
+        }
+        
+        return .success(())
     }
 }

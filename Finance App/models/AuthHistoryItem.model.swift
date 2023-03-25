@@ -18,4 +18,9 @@ struct AuthHistoryItem : Hashable, Codable {
         self.id = id
         self.timestamp = timestamp.dateValue()
     }
+    
+    enum CodingKeys: CodingKey {
+        case id
+        case timestamp
+    }
 }
