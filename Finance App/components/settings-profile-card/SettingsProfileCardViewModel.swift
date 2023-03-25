@@ -11,6 +11,7 @@ import FirebaseAuth
 
 @MainActor class SettingsProfileCardViewModel : ObservableObject {
     @Published private var currentUser: User?
+    @Published var navigationTag: String?
     
     init() {
         self.currentUser = Auth.auth().currentUser

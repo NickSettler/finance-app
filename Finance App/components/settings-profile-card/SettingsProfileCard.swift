@@ -11,7 +11,7 @@ struct SettingsProfileCard: View {
     @StateObject private var viewModel = SettingsProfileCardViewModel()
     
     var body: some View {
-        HStack(spacing: 16) {
+        VStack(alignment: .center, spacing: 16) {
             AsyncImage(
                 url: viewModel.photoURL(),
                 content: { image in
@@ -25,21 +25,15 @@ struct SettingsProfileCard: View {
             .frame(width: 64, height: 64)
             .clipShape(Circle())
             
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .center, spacing: 8) {
                 Text("\(viewModel.displayName())")
                     .font(.headline)
                 Text("\(viewModel.email())")
                     .font(.caption)
             }
-            
-            Spacer()
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 12)
         .padding(.horizontal, 20)
-//        .background {
-//            RoundedRectangle(cornerRadius: 20)
-//                .foregroundColor(Color.gray.opacity(0.24))
-//        }
     }
 }
 
