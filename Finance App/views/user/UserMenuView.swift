@@ -12,41 +12,50 @@ struct UserMenuView: View {
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .center, spacing: 24) {
-                SettingsProfileCard()
-                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                
-                List {
-                    Section(header: Text("Settings")) {
-                        NavigationLink {
-                            HStack {}
-                        } label: {
-                            Text("User data")
-                        }
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .center, spacing: 24) {
+                        SettingsProfileCard()
                         
-                        NavigationLink {
-                            AuthHistory()
-                        } label: {
-                            Text("Auth history")
+                        VStack {
+                            NavigationLink {
+                                HStack {}
+                            } label: {
+                                Text("User data")
+                            }
+                            .buttonStyle(.borderedProminent)
+                            
+                            NavigationLink {
+                                AuthHistory()
+                            } label: {
+                                Text("Auth history")
+                            }
+                            .buttonStyle(.borderedProminent)
                         }
+                        //                        }
+                        
+                        //                        Section(header: Text("Actions")) {
+                        //
+                        //                        }
+                        //                    }
+                        //                    .listStyle(.grouped)
+                        //                    .scrollContentBackground(.hidden)
                     }
-                    
-                    Section(header: Text("Actions")) {
-                        
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink {
+                                UserEditView()
+                            } label: {
+                                Text("Edit")
+                            }
+                        }
                     }
                 }
-                .listStyle(.grouped)
-                .scrollContentBackground(.hidden)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        UserEditView()
-                    } label: {
-                        Text("Edit")
-                    }
-                }
-            }
+            .navigationTitle("Anonymous")
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(Color.accentColor, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 }
