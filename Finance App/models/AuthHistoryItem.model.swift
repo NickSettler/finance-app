@@ -14,7 +14,7 @@ struct AuthHistoryItem : Hashable, Codable {
     @DocumentID var id: String?
     var timestamp: Date
     
-    init(id: String? = nil, timestamp: Timestamp) {
+    init(id: String, timestamp: Timestamp) {
         self.id = id
         self.timestamp = timestamp.dateValue()
     }
