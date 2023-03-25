@@ -40,4 +40,16 @@ struct UserService {
         
         return .success(())
     }
+    
+    static func getUserData(by id: String) async -> Result<UserData, Error> {
+        let query = FirebaseService.shared.database
+            .collection(FirestoreCollection.USER_DATA.rawValue)
+        
+        do {
+            let data = try await FirebaseService.shared.getOne(of: UserData.self, with: query, by: id).get()
+            return .success(data)
+        } catch {
+            return .failure(error)
+        }
+    }
 }

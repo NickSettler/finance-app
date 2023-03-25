@@ -496,6 +496,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Finance App/Finance App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Finance App/Preview Content\"";
 				DEVELOPMENT_TEAM = 9QSX88N5C6;
 				ENABLE_PREVIEWS = YES;

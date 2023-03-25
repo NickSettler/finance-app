@@ -12,13 +12,26 @@ import FirebaseAuth
 @MainActor class SettingsProfileCardViewModel : ObservableObject {
     @Published private var currentUser: User?
     @Published var navigationTag: String?
+    @Published var fullName: String?
     
     init() {
         self.currentUser = Auth.auth().currentUser
     }
     
+    func handleAppear() {
+        Task {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            
+            do {
+                self.fullName = try await UserService.getUserData(by: uid).get().full_name
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     func displayName() -> String {
-        return currentUser?.displayName ?? "Anonymous"
+        return self.fullName ?? "Anonymous"
     }
     
     func email() -> String {

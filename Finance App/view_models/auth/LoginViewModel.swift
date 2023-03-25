@@ -14,13 +14,7 @@ import FirebaseFirestore
 @MainActor class LoginViewModel: ObservableObject {
     @Published var emailValue: String = ""
     @Published var passwordValue: String = ""
-    @Published var error: String = "Error bla bla bla"
-    
-    private let db: Firestore
-    
-    init() {
-        self.db = Firestore.firestore()
-    }
+    @Published var error: String = ""
     
     func signIn() {
         Task {

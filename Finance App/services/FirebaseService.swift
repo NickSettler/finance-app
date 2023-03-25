@@ -52,6 +52,18 @@ extension FirebaseService {
         }
     }
     
+    func getOne<T: Decodable>(of type: T.Type, with collection: CollectionReference, by id: String) async -> Result<T, Error> {
+        do {
+            let document = try await collection.document(id).getDocument()
+            
+            let data = try document.data(as: T.self)
+            return .success(data)
+        } catch let error {
+            print("Error: \(#function) couldn't access snapshot, \(error)")
+            return .failure(error)
+        }
+    }
+    
     func getMany<T: Decodable>(of type: T.Type, with query: Query) async -> Result<[T], Error> {
         do {
             var response: [T] = []

@@ -25,7 +25,6 @@ import FirebaseFirestoreSwift
         
         do {
             self.items = try await UserService.getAuthHistory(by: uid).get()
-            print("Got: \(self.items)")
         } catch {
             print("Error getting documents: \(error)")
         }
