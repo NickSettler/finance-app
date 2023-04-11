@@ -27,6 +27,8 @@ extension FirebaseIdentifiable {
 enum FirestoreCollection : String {
     case USER_DATA = "user-data"
     case AUTH_HISTORY = "auth-history"
+    case CATEGORIES = "categories"
+    case TRANSACTIONS = "transactions"
 }
 
 enum FirestoreError : Error {
@@ -91,6 +93,36 @@ extension FirebaseService {
             return .success(response)
         } catch let error {
             print("Error: couldn't access snapshot, \(error)")
+            return .failure(error)
+        }
+    }
+    
+    func post<T: FirebaseIdentifiable>(_ value: T, to collection: String) async -> Result<T, Error> {
+        let ref = database.collection(collection).document()
+        var toWrite: T = value
+        toWrite.id = ref.documentID
+        
+        do {
+            try await ref.setData(toWrite as! [String : Any])
+            return .success(toWrite)
+        } catch {
+            print("Error: \(#function) in collection: \(collection), \(error)")
+            return .failure(error)
+        }
+    }
+    
+    func put<T: FirebaseIdentifiable>(_ value: T, to collection: String) async -> Result<T, Error> {
+        guard let uid = value.id else {
+            return .failure("No id value in \(value)")
+        }
+        
+        let ref = database.collection(collection).document(uid)
+        
+        do {
+            try await ref.setData(value as! [String : Any])
+            return .success(value)
+        } catch {
+            print("Error: \(#function) in \(collection) for id: \(uid), \(error)")
             return .failure(error)
         }
     }
