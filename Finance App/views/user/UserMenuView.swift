@@ -31,15 +31,14 @@ struct UserMenuView: View {
                                 Text("Auth history")
                             }
                             .buttonStyle(.borderedProminent)
+                            
+                            NavigationLink {
+                                CategoriesView()
+                            } label: {
+                                Text("Custom categories")
+                            }
+                            .buttonStyle(.borderedProminent)
                         }
-                        //                        }
-                        
-                        //                        Section(header: Text("Actions")) {
-                        //
-                        //                        }
-                        //                    }
-                        //                    .listStyle(.grouped)
-                        //                    .scrollContentBackground(.hidden)
                     }
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
