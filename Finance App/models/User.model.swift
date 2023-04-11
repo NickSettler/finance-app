@@ -10,13 +10,23 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct UserData: Hashable, Codable {
+struct UserData: FirebaseIdentifiable {
     @DocumentID var id: String?
     var first_name: String
     var last_name: String
     var full_name: String {
         get {
             return "\(self.first_name) \(self.last_name)"
+        }
+    }
+    
+    var collectionPath: String {
+        get {
+            guard let uid = self.id else {
+                return ""
+            }
+            
+            return "\(FirestoreCollection.USER_DATA.rawValue)/\(uid)"
         }
     }
     

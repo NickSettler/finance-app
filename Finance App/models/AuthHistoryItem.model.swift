@@ -10,17 +10,17 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct AuthHistoryItem : Hashable, Codable {
+struct AuthHistoryItem : FirebaseIdentifiable {
     @DocumentID var id: String?
     var timestamp: Date
-    
-    init(id: String, timestamp: Timestamp) {
-        self.id = id
-        self.timestamp = timestamp.dateValue()
-    }
     
     enum CodingKeys: CodingKey {
         case id
         case timestamp
+    }
+    
+    init(id: String, timestamp: Timestamp) {
+        self.id = id
+        self.timestamp = timestamp.dateValue()
     }
 }

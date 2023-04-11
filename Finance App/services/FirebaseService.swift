@@ -11,7 +11,17 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 protocol FirebaseIdentifiable : Hashable, Codable {
-    var id: String { get set }
+    var id: String? { get set }
+}
+
+extension FirebaseIdentifiable {
+    func post(to collection: String) async -> Result<Self, Error> {
+        return await FirebaseService.shared.post(self, to: collection)
+    }
+    
+    func put(to collection: String) async -> Result<Self, Error> {
+        return await FirebaseService.shared.put(self, to: collection)
+    }
 }
 
 enum FirestoreCollection : String {
