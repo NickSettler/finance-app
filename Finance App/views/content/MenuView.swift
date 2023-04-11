@@ -12,30 +12,32 @@ struct MenuView: View {
     @StateObject private var viewModel = MenuViewModel()
     
     var body: some View {
-        TabView {
-            VStack {
-                Text("Hello, World! You are logged in!")
-                Button {
-                    do {
-                        try Auth.auth().signOut()
-                    } catch {
-                        print("cant sign out")
-                    }
-                } label: {
-                    Text("sign out")
+        TabView(selection: $viewModel.selectedItem) {
+            HomeView()
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Home")
                 }
-                .buttonStyle(.borderedProminent)
-            }
-            .tabItem {
-                Image(systemName: "house.fill")
-                Text("Home")
-            }
+                .tag(1)
             
             UserMenuView()
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
                 }
+                .tag(3)
+        }
+        .onChange(of: viewModel.selectedItem) {
+            if viewModel.selectedItem == 2 {
+                viewModel.isAddPresent = true
+            } else {
+                viewModel.oldSelectedItem = $0
+            }
+        }
+        .sheet(isPresented: $viewModel.isAddPresent, onDismiss: {
+            viewModel.selectedItem = viewModel.oldSelectedItem
+        }) {
+            Text("Hello!")
         }
     }
 }
