@@ -11,6 +11,8 @@ import FirebaseAuth
 struct HomeView: View {
     var size: CGFloat
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @State private var expandAccounts: Bool = false
     
     var body: some View {
@@ -21,7 +23,7 @@ struct HomeView: View {
                 } label: {
                     Image(systemName: expandAccounts ? "chevron.left" : "line.3.horizontal")
                         .font(.title2)
-                        .foregroundColor(.black)
+                        .foregroundColor(colorScheme == .light ? .black : .white)
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 expandAccounts = false
@@ -34,7 +36,7 @@ struct HomeView: View {
                 VStack(alignment: .trailing, spacing: 4) {
                     Text("Your balance")
                         .font(.caption)
-                        .foregroundColor(.black)
+                        .foregroundColor(colorScheme == .light ? .black : .white)
                         .opacity(expandAccounts ? 0 : 1)
                     
                     Text(expandAccounts ? "All Accounts" : "$295.4")
@@ -56,22 +58,22 @@ struct HomeView: View {
             .frame(maxWidth: .infinity)
             .background {
                 CustomCorner(corners: [.topLeft, .topRight], radius: 30)
-                    .fill(.white)
+                    .fill(colorScheme == .light ? .white : .black)
                     .ignoresSafeArea()
                     .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: -5)
             }
             .overlay {
                 CustomCorner(corners: [.topLeft, .topRight], radius: 30)
-                    .fill(.ultraThinMaterial)
+                    .fill(colorScheme == .light ? .white.opacity(0.92) : .black.opacity(0.92))
                     .opacity(expandAccounts ? 1 : 0)
                     .padding(.bottom, 16)
-                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
+                    .shadow(color: colorScheme == .light ?.white.opacity(0.05) : .black.opacity(0.05), radius: 10, x: 0, y: 5)
             }
             .padding(.top, 20)
         }
         .background {
             Rectangle()
-                .fill(.black.opacity(0.05))
+                .fill(colorScheme == .light ? .black.opacity(0.05) : .white.opacity(0.1))
                 .ignoresSafeArea()
         }
         .overlayPreferenceValue(CardRectKey.self) { preferences in
@@ -173,14 +175,12 @@ struct HomeView: View {
                 }
                 .padding(.horizontal, -16)
             }
-            
-            
         }
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        MainView()
     }
 }
