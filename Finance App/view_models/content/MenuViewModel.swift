@@ -10,7 +10,8 @@ import SwiftUI
 
 @MainActor class MenuViewModel : ObservableObject {
     @Published var isAddPresent: Bool = false
-    @Published var selectedItem = 1
+    @Published var activeTab: MenuTabModel = .home
+    @Published var tabShapePosition: CGPoint = .zero
     @Published var oldSelectedItem = 1
     @Published var isAuthHistoryShown : Bool = false
     @Published var isUserMenuShown : Bool = false
