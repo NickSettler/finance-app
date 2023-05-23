@@ -14,6 +14,7 @@ struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @State private var expandAccounts: Bool = false
+    @StateObject private var viewModel = HomeViewViewModel()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -92,6 +93,9 @@ struct HomeView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.handleAppear()
+        }
     }
     
     @ViewBuilder
@@ -157,17 +161,26 @@ struct HomeView: View {
     func BottomContent() -> some View {
         VStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Instant Transfer")
+                Text("Popular Categories")
                     .font(.title3.bold())
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
-                        ForEach(1...6, id: \.self) { index in
-                            Image(systemName: "house")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 55, height: 55)
-                                .clipShape(Circle())
+                        ForEach(viewModel.popularCategories, id: \.key) { category, count in
+                            VStack(alignment: .center, spacing: 4) {
+                                Image(systemName: category.icon)
+                                    .font(.title2)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 55, height: 55)
+                                    .clipShape(Circle())
+                                    .background {
+                                        Circle()
+                                            .strokeBorder(.gray, lineWidth: 1)
+                                    }
+                                
+                                Text("\(count)")
+                                    .font(.caption)
+                            }
                         }
                     }
                     .padding(.horizontal, 16)
@@ -181,6 +194,6 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        HomeView(size: 12)
     }
 }
