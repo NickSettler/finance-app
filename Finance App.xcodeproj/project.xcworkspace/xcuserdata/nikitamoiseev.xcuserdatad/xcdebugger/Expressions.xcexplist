@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "MainViewModel.handleViewAppear():MainViewModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "LoginViewModel.signIn():LoginViewModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in AuthHistoryViewModel.handleViewAppear():AuthHistoryViewModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in LoginViewModel.signIn():LoginViewModel.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

@@ -19,8 +19,26 @@ struct CategoriesView: View {
     }
     
     private var list: some View {
-        List(viewModel.categories, id: \.id) { category in
-            Text("\(category.name)")
+        List($viewModel.categories.indices, id: \.self) { index in
+            NavigationLink {
+                CategoryView(category: .init(
+                    get: {
+                        return viewModel.categories[index]
+                    },
+                    set: { cat in
+                        viewModel.saveCategory(category: cat)
+                    }))
+            } label: {
+                HStack(alignment: .center, spacing: 12) {
+                    Image(systemName: viewModel.categories[index].icon)
+                    
+                    VStack(alignment: .leading) {
+                        Text("\(viewModel.categories[index].name)")
+                    }
+                    
+                    Spacer()
+                }
+            }
         }
         .listStyle(.grouped)
         .background(.pink)
@@ -32,12 +50,7 @@ struct CategoriesView: View {
     }
     
     var body: some View {
-        //        VStack {
-        //            Text("Some text")
-        //            Spacer()
-        ////            list
-        //        }
-        NavigationView {
+        ZStack {
             if viewModel.categories.count == 0 {
                 noCategories
             } else {
@@ -45,6 +58,21 @@ struct CategoriesView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(
+            trailing: Button {
+                //
+            } label: {
+                NavigationLink {
+                    CategoryView(category: .init(get: {
+                        .init(name: "", icon: "")
+                    }, set: { cat in
+                        viewModel.createCategory(category: cat)
+                    }))
+                } label: {
+                    Text("Add")
+                }
+            }
+        )
         .onAppear {
             Task {
                 await viewModel.getUserCategories()
