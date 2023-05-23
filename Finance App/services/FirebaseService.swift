@@ -103,7 +103,7 @@ extension FirebaseService {
         toWrite.id = ref.documentID
         
         do {
-            try await ref.setData(toWrite as! [String : Any])
+            try await ref.setData(from: toWrite)
             return .success(toWrite)
         } catch {
             print("Error: \(#function) in collection: \(collection), \(error)")
@@ -119,7 +119,7 @@ extension FirebaseService {
         let ref = database.collection(collection).document(uid)
         
         do {
-            try await ref.setData(value as! [String : Any])
+            try await ref.setData(from: value)
             return .success(value)
         } catch {
             print("Error: \(#function) in \(collection) for id: \(uid), \(error)")
