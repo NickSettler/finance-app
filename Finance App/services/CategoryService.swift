@@ -36,4 +36,23 @@ struct CategoryService {
             return .failure(error)
         }
     }
+    
+    static func getPopularCategories(for id: String) async -> Result<Array<(key: Category, value: Int)>, Error> {
+        do {
+            let transactions = try await TransactionService.getTransactions(for: id).get()
+            let categories = try await CategoryService.getCategories(for: id).get()
+            
+            let data: [Category: Int] = transactions.reduce(into: [:]) { result, transaction in
+                guard let category = categories.first(where: { $0.id == transaction.category?.documentID }) else { return }
+                
+                result[category, default: 0] += 1
+            }
+            
+            return .success(
+                data.sorted { $0.value > $1.value }
+            )
+        } catch {
+            return .failure(error)
+        }
+    }
 }
