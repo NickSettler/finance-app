@@ -30,4 +30,11 @@ struct Transaction : FirebaseIdentifiable {
         self.amount = amount
         self.timestamp = timestamp
     }
+    
+    init(id: String, name: String, amount: Double, timestamp: Timestamp) {
+        self.id = id
+        self.name = name
+        self.amount = amount
+        self.timestamp = timestamp
+    }
 }
