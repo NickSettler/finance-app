@@ -85,7 +85,7 @@ struct TransactionsView: View {
                     HStack(alignment: .top, spacing: 4) {
                         Text("\(transaction.name ?? "")")
                         Spacer()
-                        Text(transaction.timestamp.dateValue(), style: .offset)
+                        Text(transaction.timestamp.dateValue(), style: .relative)
                             .font(.caption2)
                     }
                     
