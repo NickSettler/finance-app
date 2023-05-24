@@ -12,18 +12,35 @@ import FirebaseAuth
     private(set) var currentUser: User?
     
     @Published var transactions: [Transaction] = [
-//        .init(id: "124", name: "Salary", amount: 12, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 7)))),
-//        .init(id: "123", name: "Food", amount: -100, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 13))))
+        .init(id: "124", name: "Salary", amount: 12, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 7)))),
+        .init(id: "123", name: "Food", amount: -100, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 13))))
     ]
     
-    @Published var isSortingDesc: Bool = false
+    @Published var isSortingDesc: Bool = true
     
     @Published var isFilterSheetPresent: Bool = false
-    
+
     @Published var afterDate: Date?
     @Published var editingAfterDate: Date = .now
     @Published var beforeDate: Date?
     @Published var editingBeforeDate: Date = .now
+    
+    private var initialAfterDate: Date {
+        guard let firstTransaction = self.transactions
+            .sorted(by: \.timestamp.seconds, using: (<))
+            .first else { return .now }
+        
+        return firstTransaction.timestamp.dateValue()
+    }
+    
+    private var initialBeforeDate: Date = .now
+    
+    var canReset: Bool {
+        let afterDateChanged = abs(initialAfterDate.timeIntervalSince(editingAfterDate)) > 60 * 60 * 24
+        let beforeDateChanged = abs(initialBeforeDate.timeIntervalSince(editingBeforeDate)) > 60 * 60 * 24
+        
+        return afterDateChanged || beforeDateChanged
+    }
     
     var filteredTransactions: [Transaction] {
         self.transactions
@@ -53,8 +70,8 @@ import FirebaseAuth
     }
     
     func displayFilters() {
-        editingAfterDate = afterDate ?? .now
-        editingBeforeDate = beforeDate ?? .now
+        editingAfterDate = afterDate ?? initialAfterDate
+        editingBeforeDate = beforeDate ?? initialBeforeDate
         
         isFilterSheetPresent = true
     }
@@ -64,5 +81,12 @@ import FirebaseAuth
         beforeDate = editingBeforeDate
         
         isFilterSheetPresent = false
+    }
+    
+    func resetFilters() {
+        editingAfterDate = initialAfterDate
+        editingBeforeDate = initialBeforeDate
+        
+        applyFilters()
     }
 }

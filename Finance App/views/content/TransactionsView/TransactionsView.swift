@@ -56,6 +56,17 @@ struct TransactionsView: View {
                 }
                 
                 Spacer()
+                
+                Button {
+                    viewModel.resetFilters()
+                } label: {
+                    HStack(alignment: .center, spacing: 8) {
+                        Image(systemName: "arrow.counterclockwise")
+                        
+                        Text("Reset filters")
+                    }
+                }
+                .disabled(!viewModel.canReset)
             }
             .padding(16)
             .navigationBarItems(
@@ -79,6 +90,7 @@ struct TransactionsView: View {
                 let isExpense = transaction.amount < 0
                 
                 Image(systemName: isExpense ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
+                    .font(.title3)
                     .foregroundColor(isExpense ? .red : .green)
                 
                 VStack(alignment: .leading, spacing: 4) {
