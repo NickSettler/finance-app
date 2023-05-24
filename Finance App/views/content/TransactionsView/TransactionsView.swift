@@ -103,12 +103,25 @@ struct TransactionsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .center) {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        viewModel.isSortingDesc.toggle()
+                    }
+                } label: {
+                    HStack(alignment: .center, spacing: 8) {
+                        Image(systemName: "chevron.down")
+                            .rotationEffect(.degrees(viewModel.isSortingDesc ? 0 : 180))
+                        
+                        Text(viewModel.isSortingDesc ? "Descending" : "Ascending")
+                    }
+                }
+                
                 Spacer()
                 
                 Button {
                     viewModel.displayFilters()
                 } label: {
-                    HStack(alignment: .center, spacing: 4) {
+                    HStack(alignment: .center, spacing: 8) {
                         Image(systemName: "line.3.horizontal.decrease")
                         
                         Text("Filter")

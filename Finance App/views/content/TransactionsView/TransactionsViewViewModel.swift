@@ -15,6 +15,9 @@ import FirebaseAuth
 //        .init(id: "124", name: "Salary", amount: 12, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 7)))),
 //        .init(id: "123", name: "Food", amount: -100, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 13))))
     ]
+    
+    @Published var isSortingDesc: Bool = false
+    
     @Published var isFilterSheetPresent: Bool = false
     
     @Published var afterDate: Date?
@@ -30,6 +33,7 @@ import FirebaseAuth
                 
                 return isAfterDateMatch && isBeforeDateMatch
             }
+            .sorted(by: \.timestamp.seconds, using: isSortingDesc ? (>) : (<))
     }
     
     init() {
