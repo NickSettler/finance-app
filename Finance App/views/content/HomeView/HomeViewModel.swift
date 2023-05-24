@@ -11,9 +11,7 @@ import FirebaseAuth
 @MainActor class HomeViewViewModel : ObservableObject {
     private(set) var currentUser: User?
     
-    @Published var popularCategories: [(key: Category, value: Int)] = [
-        (.init(name: "abc", icon: "house.fill"), 12)
-    ]
+    @Published var popularCategories: [(key: Category, value: Int)] = []
     
     init() {
         self.currentUser = Auth.auth().currentUser

@@ -17,84 +17,86 @@ struct HomeView: View {
     @StateObject private var viewModel = HomeViewViewModel()
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Button {
-                    
-                } label: {
-                    Image(systemName: expandAccounts ? "chevron.left" : "line.3.horizontal")
-                        .font(.title2)
-                        .foregroundColor(colorScheme == .light ? .black : .white)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                expandAccounts = false
+        NavigationView {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: expandAccounts ? "chevron.left" : "line.3.horizontal")
+                            .font(.title2)
+                            .foregroundColor(colorScheme == .light ? .black : .white)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    expandAccounts = false
+                                }
                             }
-                        }
-                }
-                
-                Spacer()
-                
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("Your balance")
-                        .font(.caption)
-                        .foregroundColor(colorScheme == .light ? .black : .white)
-                        .opacity(expandAccounts ? 0 : 1)
+                    }
                     
-                    Text(expandAccounts ? "All Accounts" : "$295.4")
-                        .font(.title2.bold())
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("Your balance")
+                            .font(.caption)
+                            .foregroundColor(colorScheme == .light ? .black : .white)
+                            .opacity(expandAccounts ? 0 : 1)
+                        
+                        Text(expandAccounts ? "All Accounts" : "$295.4")
+                            .font(.title2.bold())
+                    }
                 }
-            }
-            .padding([.horizontal, .top], 15)
-            
-            CardsView()
-                .padding(.horizontal, 16)
-            
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 16) {
-                    BottomContent()
+                .padding([.horizontal, .top], 15)
+                
+                CardsView()
+                    .padding(.horizontal, 16)
+                
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 16) {
+                        BottomContent()
+                    }
+                    .padding(.top, 32)
+                    .padding([.horizontal, .bottom], 16)
                 }
-                .padding(.top, 32)
-                .padding([.horizontal, .bottom], 16)
+                .frame(maxWidth: .infinity)
+                .background {
+                    CustomCorner(corners: [.topLeft, .topRight], radius: 30)
+                        .fill(colorScheme == .light ? .white : .black)
+                        .ignoresSafeArea()
+                        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: -5)
+                }
+                .overlay {
+                    CustomCorner(corners: [.topLeft, .topRight], radius: 30)
+                        .fill(colorScheme == .light ? .white.opacity(0.92) : .black.opacity(0.92))
+                        .opacity(expandAccounts ? 1 : 0)
+                        .padding(.bottom, 16)
+                        .shadow(color: colorScheme == .light ?.white.opacity(0.05) : .black.opacity(0.05), radius: 10, x: 0, y: 5)
+                }
+                .padding(.top, 20)
             }
-            .frame(maxWidth: .infinity)
             .background {
-                CustomCorner(corners: [.topLeft, .topRight], radius: 30)
-                    .fill(colorScheme == .light ? .white : .black)
+                Rectangle()
+                    .fill(colorScheme == .light ? .black.opacity(0.05) : .white.opacity(0.1))
                     .ignoresSafeArea()
-                    .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: -5)
             }
-            .overlay {
-                CustomCorner(corners: [.topLeft, .topRight], radius: 30)
-                    .fill(colorScheme == .light ? .white.opacity(0.92) : .black.opacity(0.92))
-                    .opacity(expandAccounts ? 1 : 0)
-                    .padding(.bottom, 16)
-                    .shadow(color: colorScheme == .light ?.white.opacity(0.05) : .black.opacity(0.05), radius: 10, x: 0, y: 5)
-            }
-            .padding(.top, 20)
-        }
-        .background {
-            Rectangle()
-                .fill(colorScheme == .light ? .black.opacity(0.05) : .white.opacity(0.1))
-                .ignoresSafeArea()
-        }
-        .overlayPreferenceValue(CardRectKey.self) { preferences in
-            if let cardPreference = preferences["CardRect"] {
-                GeometryReader { proxy in
-                    let cardRect = proxy[cardPreference]
-                    
-                    CardContent()
-                        .frame(width: cardRect.width, height: expandAccounts ? nil : cardRect.height)
-                        .offset(x: cardRect.minX, y: cardRect.minY)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.35)) {
-                                expandAccounts = true
+            .overlayPreferenceValue(CardRectKey.self) { preferences in
+                if let cardPreference = preferences["CardRect"] {
+                    GeometryReader { proxy in
+                        let cardRect = proxy[cardPreference]
+                        
+                        CardContent()
+                            .frame(width: cardRect.width, height: expandAccounts ? nil : cardRect.height)
+                            .offset(x: cardRect.minX, y: cardRect.minY)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.35)) {
+                                    expandAccounts = true
+                                }
                             }
-                        }
+                    }
                 }
             }
-        }
-        .onAppear {
-            viewModel.handleAppear()
+            .onAppear {
+                viewModel.handleAppear()
+            }
         }
     }
     
@@ -157,16 +159,17 @@ struct HomeView: View {
             }
     }
     
-    @ViewBuilder
-    func BottomContent() -> some View {
-        VStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Popular Categories")
-                    .font(.title3.bold())
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 16) {
-                        ForEach(viewModel.popularCategories, id: \.key) { category, count in
+    var popularCategoriesSection : some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Popular Categories")
+                .font(.title3.bold())
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(viewModel.popularCategories, id: \.key) { category, count in
+                        NavigationLink {
+                            TransactionsView()
+                        } label: {
                             VStack(alignment: .center, spacing: 4) {
                                 Image(systemName: category.icon)
                                     .font(.title2)
@@ -178,15 +181,25 @@ struct HomeView: View {
                                             .strokeBorder(.gray, lineWidth: 1)
                                     }
                                 
-                                Text("\(count)")
+                                Text("\(category.name) (\(count))")
                                     .font(.caption)
                             }
+                            .foregroundColor(colorScheme == .light ? .black : .white)
                         }
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 10 )
                 }
-                .padding(.horizontal, -16)
+                .padding(.horizontal, 16)
+                .padding(.top, 10 )
+            }
+            .padding(.horizontal, -16)
+        }
+    }
+    
+    @ViewBuilder
+    func BottomContent() -> some View {
+        VStack(spacing: 16) {
+            if viewModel.popularCategories.count != 0 {
+                popularCategoriesSection
             }
         }
     }
