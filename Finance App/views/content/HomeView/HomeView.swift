@@ -1,212 +1,214 @@
 //
-//  HomeView.swift
+//  HomeView2.swift
 //  Finance App
 //
-//  Created by Никита Моисеев on 11.04.2023.
+//  Created by Никита Моисеев on 26.05.2023.
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct HomeView: View {
-    var size: CGFloat
-    
     @Environment(\.colorScheme) var colorScheme
+    @AppStorage("isDarkMode") var isDarkMode: Bool = true
     
-    @State private var expandAccounts: Bool = false
-    @StateObject private var viewModel = HomeViewViewModel()
+    @StateObject private var viewModel = HomeViewModel()
+    
+    var balance : some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text("Your balance")
+                .font(.caption)
+                .foregroundColor(.TextColorSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Text(1232.54, format: .currency(code: "CZK"))
+                .font(.largeTitle.bold())
+                .kerning(1.3)
+                .foregroundColor(.TextColorPrimary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+    
+    var actions : some View {
+        HStack (alignment: .center) {
+            action("house.fill", "Send") {
+                print("sending money")
+            }
+            .frame(maxWidth: .infinity)
+            
+            Divider()
+                .frame(maxWidth: 1, maxHeight: 32)
+                .overlay(Color.TextColorSecondary.opacity(0.3))
+            
+            action("house.fill", "Colors") {
+                print("HI")
+                changeDarkMode(state: !isDarkMode)
+            }
+            .frame(maxWidth: .infinity)
+            
+            Divider()
+                .frame(maxWidth: 1, maxHeight: 32)
+                .overlay(Color.TextColorSecondary.opacity(0.3))
+            
+            action("house.fill", "Send") {
+                print("sending money")
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+        .frame(maxWidth: .infinity)
+        .background {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.ColorPrimary)
+        }
+    }
+    
+    @ViewBuilder
+    func action(
+        _ icon: String,
+        _ name: String,
+        _ callback: @escaping () -> ()
+    ) -> some View {
+        Button(action: callback) {
+            VStack(alignment: .center, spacing: 4) {
+                Image(systemName: icon)
+                Text("\(name)")
+                    .font(.caption)
+            }
+            .foregroundColor(Color.TextColorPrimary)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    var operations : some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .center, spacing: 8) {
+                Text("Transactions")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                
+                Spacer()
+                
+                Picker("Dates", selection: .constant(1)) {
+                    ForEach (0...6, id: \.self) { i in
+                        Text("\(i)")
+                    }
+                }
+                .tint(.ColorPrimary)
+                .pickerStyle(.menu)
+            }
+            
+            if viewModel.recentTransactions.count > 0 {
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text(123.2, format: .currency(code: "CZK"))
+                        .font(.title3)
+                        .fontWeight(.medium)
+                    
+                    Text("spent in March")
+                        .font(.caption)
+                }
+                
+                Divider()
+                    .overlay(Color.TextColorSecondary.opacity(0.3))
+                
+                operationsList
+            } else {
+                Text("No recent transactions")
+                    .foregroundColor(.TextColorSecondary)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .padding(.vertical, 16)
+        .padding(.horizontal, 20)
+        .frame(maxWidth: .infinity)
+        .background {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.ColorPrimary)
+        }
+    }
+    
+    var operationsList : some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack {
+                ForEach(viewModel.recentTransactions, id: \.id) { transaction in
+                    HStack(alignment: .center, spacing: 8) {
+                        let category = viewModel.categories.first {
+                            $0.id == transaction.id
+                        } ?? unknownCategory
+                        
+                        Image(systemName: "\(category.icon)")
+                            .padding(8)
+                            .frame(
+                                width: 40,
+                                height: 40
+                            )
+                            .foregroundColor(.TextColorPrimary)
+                            .background {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.TextColorPrimary.opacity(0.12))
+                            }
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(transaction.name ?? "")")
+                                .fontWeight(.medium)
+                                .foregroundColor(.TextColorPrimary)
+                            
+                            Text("Transfer")
+                                .font(.footnote)
+                                .foregroundColor(.TextColorSecondary)
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .trailing, spacing: 2) {
+                            Text(transaction.amount, format: .currency(code: "CZK"))
+                                .font(.callout)
+                                .foregroundColor(.TextColorPrimary)
+                            
+                            Text(transaction.timestamp.dateValue(), style: .time)
+                                .font(.footnote)
+                                .foregroundColor(.TextColorSecondary)
+                        }
+                    }
+                    .padding(.bottom, 8)
+                }
+            }
+        }
+    }
     
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: expandAccounts ? "chevron.left" : "line.3.horizontal")
-                            .font(.title2)
-                            .foregroundColor(colorScheme == .light ? .black : .white)
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    expandAccounts = false
-                                }
-                            }
-                    }
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("Your balance")
-                            .font(.caption)
-                            .foregroundColor(colorScheme == .light ? .black : .white)
-                            .opacity(expandAccounts ? 0 : 1)
-                        
-                        Text(expandAccounts ? "All Accounts" : "$295.4")
-                            .font(.title2.bold())
-                    }
-                }
-                .padding([.horizontal, .top], 15)
+        VStack(alignment: .center) {
+            balance
+            
+            Divider()
+                .overlay(Color.TextColorSecondary.opacity(0.3))
+            
+            VStack(alignment: .center, spacing: 12) {
+                actions
+                    .padding(.all, 16)
+                    .padding(.top, 8)
                 
-                CardsView()
+                operations
                     .padding(.horizontal, 16)
-                
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 16) {
-                        BottomContent()
-                    }
-                    .padding(.top, 32)
-                    .padding([.horizontal, .bottom], 16)
-                }
-                .frame(maxWidth: .infinity)
-                .background {
-                    CustomCorner(corners: [.topLeft, .topRight], radius: 30)
-                        .fill(colorScheme == .light ? .white : .black)
-                        .ignoresSafeArea()
-                        .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: -5)
-                }
-                .overlay {
-                    CustomCorner(corners: [.topLeft, .topRight], radius: 30)
-                        .fill(colorScheme == .light ? .white.opacity(0.92) : .black.opacity(0.92))
-                        .opacity(expandAccounts ? 1 : 0)
-                        .padding(.bottom, 16)
-                        .shadow(color: colorScheme == .light ?.white.opacity(0.05) : .black.opacity(0.05), radius: 10, x: 0, y: 5)
-                }
-                .padding(.top, 20)
             }
-            .background {
-                Rectangle()
-                    .fill(colorScheme == .light ? .black.opacity(0.05) : .white.opacity(0.1))
-                    .ignoresSafeArea()
-            }
-            .overlayPreferenceValue(CardRectKey.self) { preferences in
-                if let cardPreference = preferences["CardRect"] {
-                    GeometryReader { proxy in
-                        let cardRect = proxy[cardPreference]
-                        
-                        CardContent()
-                            .frame(width: cardRect.width, height: expandAccounts ? nil : cardRect.height)
-                            .offset(x: cardRect.minX, y: cardRect.minY)
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.35)) {
-                                    expandAccounts = true
-                                }
-                            }
-                    }
-                }
-            }
-            .onAppear {
-                viewModel.handleAppear()
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func CardContent() -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 0) {
-                ForEach(allAccounts.reversed(), id: \.id) { account in
-                    let index = CGFloat(allAccounts.firstIndex { account.id == $0.id } ?? 0)
-                    let reversedIndex = CGFloat(allAccounts.count - 1) - index
-                    
-                    let displayingStackIndex = min(index, 2)
-                    let displayScale = (displayingStackIndex / CGFloat(allAccounts.count)) * 0.15
-                    
-                    CardView(account)
-                        .rotation3DEffect(.init(degrees: expandAccounts ? -15 :  0), axis: (x: 1, y: 0, z: 0), anchor: .top)
-                        .frame(height: 200)
-                        .scaleEffect(1 - (expandAccounts ? 0 : displayScale))
-                        .offset(y: expandAccounts ? 0 : (displayingStackIndex * -15))
-                        .offset(y: reversedIndex * -200)
-                        .padding(.top, expandAccounts ? (reversedIndex == 0 ? 0 : 80) : 0)
-                }
-            }
-            .padding(.top, 45)
-            .padding(.bottom, CGFloat(allAccounts.count - 1) * -200)
-        }
-        .scrollDisabled(!expandAccounts)
-    }
-    
-    @ViewBuilder
-    func CardView(_ card: Account) -> some View {
-        GeometryReader {
-            let size = $0.size
+            .padding(.bottom, 20)
             
-            VStack(spacing: 0) {
-                Rectangle()
-                    .fill(.blue.gradient)
-                    .overlay(alignment: .top) {
-                        VStack {
-                            Text("\(card.name)")
-                                .font(.title2.bold())
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .offset(y: 5)
-                        }
-                        .padding(20)
-                        .foregroundColor(.black)
-                    }
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+            Spacer()
         }
+        .background(Color.BackgroundColor)
     }
     
-    @ViewBuilder
-    func CardsView() -> some View {
-        Rectangle()
-            .foregroundColor(.clear)
-            .frame(height: expandAccounts ? .infinity : 245)
-            .anchorPreference(key: CardRectKey.self, value: .bounds) { anchor in
-                return ["CardRect": anchor]
-            }
-    }
-    
-    var popularCategoriesSection : some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Popular Categories")
-                .font(.title3.bold())
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(viewModel.popularCategories, id: \.key) { category, count in
-                        NavigationLink {
-                            TransactionsView()
-                        } label: {
-                            VStack(alignment: .center, spacing: 4) {
-                                Image(systemName: category.icon)
-                                    .font(.title2)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 55, height: 55)
-                                    .clipShape(Circle())
-                                    .background {
-                                        Circle()
-                                            .strokeBorder(.gray, lineWidth: 1)
-                                    }
-                                
-                                Text("\(category.name) (\(count))")
-                                    .font(.caption)
-                            }
-                            .foregroundColor(colorScheme == .light ? .black : .white)
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 10 )
-            }
-            .padding(.horizontal, -16)
-        }
-    }
-    
-    @ViewBuilder
-    func BottomContent() -> some View {
-        VStack(spacing: 16) {
-            if viewModel.popularCategories.count != 0 {
-                popularCategoriesSection
-            }
-        }
+    func changeDarkMode(state: Bool) {
+        isDarkMode = state
+        let window = UIApplication.shared.windows.first
+        window?.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(size: 12)
+        HomeView()
     }
 }

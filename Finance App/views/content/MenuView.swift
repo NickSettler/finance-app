@@ -23,7 +23,7 @@ struct MenuView: View {
             let safeArea = $0.safeAreaInsets
             VStack(spacing: 0) {
                 TabView(selection: $viewModel.activeTab) {
-                    HomeView(size: 12)
+                    HomeView()
                         .tag(MenuTabModel.home)
                     
                     UserMenuView(size: size, safeArea: safeArea)
@@ -32,11 +32,12 @@ struct MenuView: View {
                 
                 CustomTabBar()
             }
+            .background(Color.BackgroundColor)
         }
     }
     
     @ViewBuilder
-    func CustomTabBar(_ tint: Color = .pink, _ inactiveTint: Color = .blue) -> some View {
+    func CustomTabBar(_ tint: Color = .Accent, _ inactiveTint: Color = .Accent) -> some View {
         HStack(alignment: .bottom, spacing: 0) {
             ForEach(MenuTabModel.allCases, id: \.rawValue) {
                 MenuTabItem(
@@ -53,9 +54,9 @@ struct MenuView: View {
         .padding(.vertical, 10)
         .background {
             MenuTabShape(midpoint: viewModel.tabShapePosition.x)
-                .fill(colorScheme == .light ? .white : .black)
+                .fill(Color.BackgroundColor)
                 .ignoresSafeArea()
-                .shadow(color: tint.opacity(0.2), radius: 5, x: 0, y: -5)
+                .shadow(color: Color.ColorPrimary, radius: 5, x: 0, y: -5)
                 .blur(radius: 2)
                 .padding(.top, 24)
         }
@@ -75,10 +76,10 @@ struct MenuTabItem : View {
     @State private var tabPosition: CGPoint = .zero
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 2) {
             Image(systemName: tab.systemImage)
                 .font(.title2)
-                .foregroundColor(activeTab == tab ? .white : inactiveTint)
+                .foregroundColor(activeTab == tab ? .TextColorPrimary : .TextColorSecondary)
                 .frame(width: activeTab == tab ? 58 : 35, height: activeTab == tab ? 58 : 35)
                 .background {
                     if activeTab == tab {
@@ -90,7 +91,7 @@ struct MenuTabItem : View {
             
             Text(tab.rawValue)
                 .font(.caption)
-                .foregroundColor(activeTab == tab ? tint : .gray)
+                .foregroundColor(activeTab == tab ? .TextColorPrimary : .TextColorSecondary)
         }
         .frame(maxWidth: .infinity)
         .contentShape(Rectangle())

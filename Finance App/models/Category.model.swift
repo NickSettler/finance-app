@@ -32,3 +32,5 @@ struct Category : FirebaseIdentifiable {
         self.icon = icon
     }
 }
+
+let unknownCategory: Category = .init(id: "UNKNOWN", name: "Unknown", icon: "questionmark")
