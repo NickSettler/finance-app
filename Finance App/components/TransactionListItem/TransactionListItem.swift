@@ -58,7 +58,7 @@ struct TransactionListItem: View {
                     .font(.callout)
                     .foregroundColor(.TextColorPrimary)
                 
-                Text(transaction.timestamp.dateValue(), style: .time)
+                Text(transaction.timestamp.dateValue(), format: .dateTime)
                     .font(.footnote)
                     .foregroundColor(.TextColorSecondary)
             }
