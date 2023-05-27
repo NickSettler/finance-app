@@ -32,11 +32,13 @@ struct MenuView: View {
                     UserMenuView(size: size, safeArea: safeArea)
                         .tag(MenuTabModel.settings)
                 }
+                .padding(.top, -20)
+                .offset(y: 20)
                 
                 CustomTabBar()
+                    .background(.clear)
             }
         }
-        .background(Color.BackgroundColor)
     }
     
     @ViewBuilder
