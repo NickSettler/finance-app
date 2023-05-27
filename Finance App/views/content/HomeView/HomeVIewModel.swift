@@ -9,7 +9,7 @@ import Foundation
 import FirebaseAuth
 
 @MainActor class HomeViewModel : ObservableObject {
-    @Published var recentTransactions: [Transaction] = []
+    @Published var transactions: [Transaction] = []
     @Published var categories: [Category] = []
     @Published var userData: UserData?
     
