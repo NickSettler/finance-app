@@ -20,7 +20,7 @@ struct HomeView: View {
                 .foregroundColor(.TextColorSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Text(1232.54, format: .currency(code: "CZK"))
+            Text(viewModel.balance, format: .currency(code: "CZK"))
                 .font(.largeTitle.bold())
                 .kerning(1.3)
                 .foregroundColor(.TextColorPrimary)
@@ -187,6 +187,7 @@ struct HomeView: View {
         }
         .onAppear {
             viewModel.fetchTransactions()
+            viewModel.fetchUserData()
         }
     }
     

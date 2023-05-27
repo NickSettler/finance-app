@@ -11,16 +11,37 @@ import FirebaseAuth
 @MainActor class HomeViewModel : ObservableObject {
     @Published var recentTransactions: [Transaction] = []
     @Published var categories: [Category] = []
+    @Published var userData: UserData?
     
     @Published var showAddTransactionSheet: Bool = false
+    @Published var showUpdateBalanceSheet: Bool = false {
+        didSet {
+            self.fetchUserData()
+        }
+    }
     
     private(set) var currentUser: User?
     
-    var recentSpent: Double {
+    var balance: Double {
         get {
-            self.recentTransactions.reduce(0) { sum, transaction in
+            self.transactions.reduce(self.userData?.balance ?? 0) { sum, transaction in
                 sum.advanced(by: transaction.amount)
             }
+        }
+    }
+    
+    var recentSpent: Double {
+        get {
+            self.recentTransactions.reduce(self.userData?.balance ?? 0) { sum, transaction in
+                sum.advanced(by: transaction.amount)
+            }
+        }
+    }
+    
+    var recentTransactions: [Transaction] {
+        get {
+            Array(self.transactions[..<min(self.transactions.count, 10)])
+                .sorted(by: \.timestamp.seconds, using: (>))
         }
     }
     
@@ -33,9 +54,19 @@ import FirebaseAuth
             do {
                 guard let uid = self.currentUser?.uid else { return }
                 
-                self.recentTransactions = try await TransactionService.getTransactions(for: uid).get()
-                self.recentTransactions = Array(self.recentTransactions[..<min(self.recentTransactions.count, 10)])
-                    .sorted(by: \.timestamp.seconds, using: (>))
+                self.transactions = try await TransactionService.getTransactions(for: uid).get()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func fetchUserData() {
+        Task {
+            do {
+                guard let uid = self.currentUser?.uid else { return }
+                
+                self.userData = try await UserService.getUserData(by: uid).get()
             } catch {
                 print(error)
             }
