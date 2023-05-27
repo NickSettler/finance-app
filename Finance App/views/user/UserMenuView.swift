@@ -13,6 +13,34 @@ struct UserMenuView: View {
     var size: CGSize
     var safeArea: EdgeInsets
     
+    @ViewBuilder
+    func menuListItem(
+        _ title: String,
+        _ icon: String,
+        _ navigationView: @escaping () -> some View
+    ) -> some View {
+        NavigationLink {
+            navigationView()
+        } label: {
+            HStack(alignment: .center, spacing: 12) {
+                Image(systemName: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 14, height: 14, alignment: .center)
+                    .foregroundColor(Color.TextColorSecondary)
+                
+                Text(title)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
+            .foregroundColor(Color.TextColorPrimary)
+            .background(Color.BackgroundColor)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .buttonStyle(.plain)
+    }
+    
     var body: some View {
         NavigationView {
             ScrollViewReader { scrollProxy in
@@ -22,27 +50,26 @@ struct UserMenuView: View {
                             .zIndex(1000)
                         
                         VStack(alignment: .center, spacing: 24) {
-                            VStack {
-                                NavigationLink {
+                            VStack(alignment: .leading, spacing: 0) {
+                                Divider()
+                                
+                                menuListItem("User data", "person") {
                                     HStack {}
-                                } label: {
-                                    Text("User data")
                                 }
-                                .buttonStyle(.borderedProminent)
                                 
-                                NavigationLink {
+                                Divider()
+                                
+                                menuListItem("Auth history", "list.dash") {
                                     AuthHistory()
-                                } label: {
-                                    Text("Auth history")
                                 }
-                                .buttonStyle(.borderedProminent)
                                 
-                                NavigationLink {
+                                Divider()
+                                
+                                menuListItem("Categories", "bag") {
                                     CategoriesView()
-                                } label: {
-                                    Text("Custom categories")
                                 }
-                                .buttonStyle(.borderedProminent)
+                                
+                                Divider()
                             }
                         }
                     }
@@ -68,6 +95,7 @@ struct UserMenuView: View {
                     viewModel.handleAppear()
                 }
             }
+            .background(Color.BackgroundColor)
         }
     }
     
@@ -81,7 +109,7 @@ struct UserMenuView: View {
         GeometryReader { _ in
             ZStack {
                 Rectangle()
-                    .fill(Color.pink)
+                    .fill(Color.Accent)
                 
                 VStack (spacing: 16) {
                     GeometryReader {
