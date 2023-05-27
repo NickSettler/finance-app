@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Environment(\.colorScheme) var colorScheme
     @AppStorage("isDarkMode") var isDarkMode: Bool = true
     
     @StateObject private var viewModel = HomeViewModel()
@@ -112,7 +111,7 @@ struct HomeView: View {
             .frame(maxWidth: .infinity)
             .sheet(isPresented: $viewModel.showUpdateBalanceSheet) {
                 NavigationView {
-                    UpdateBalanceSheet()
+                    UpdateBalanceSheet(balance: viewModel.balance)
                 }
                 .presentationDetents([.medium])
             }
@@ -167,9 +166,11 @@ struct HomeView: View {
                     Text(viewModel.recentSpent, format: .currency(code: "CZK"))
                         .font(.title3)
                         .fontWeight(.medium)
+                        .foregroundColor(.TextColorPrimary)
                     
                     Text("recently spent")
                         .font(.caption)
+                        .foregroundColor(.TextColorPrimary)
                 }
                 
                 Divider()
@@ -238,9 +239,9 @@ struct HomeView: View {
     }
     
     func changeDarkMode(state: Bool) {
-        isDarkMode = state
-        let window = UIApplication.shared.windows.first
-        window?.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+        withAnimation(.easeInOut(duration: 0.5)) {
+            isDarkMode.toggle()
+        }
     }
 }
 

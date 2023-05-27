@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @AppStorage("isDarkMode") var isDarkMode: Bool = true
+    
     var body: some View {
         MainView()
             .background(Color.BackgroundColor.edgesIgnoringSafeArea(.all))
+            .preferredColorScheme(isDarkMode ? .dark : .light)
     }
 }
 
