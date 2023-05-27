@@ -25,12 +25,15 @@ struct CategoryView: View {
                     viewModel.isSymbolPickerPresent = true
                 } label: {
                     Image(systemName: viewModel.editedCategory.icon)
-                        .foregroundColor(colorScheme == .light ? .black : .white)
+                        .foregroundColor(Color.TextColorPrimary)
                         .padding(8)
-                        .frame(width: 48, height: 48)
+                        .frame(
+                            width: 44,
+                            height: 44
+                        )
                         .background {
                             RoundedRectangle(cornerRadius: 8)
-                                .strokeBorder(.gray, lineWidth: 1)
+                                .strokeBorder(Color.TextColorSecondary, lineWidth: 2)
                         }
                 }
                 .sheet(isPresented: $viewModel.isSymbolPickerPresent) {
@@ -38,17 +41,13 @@ struct CategoryView: View {
                 }
                 
                 TextField("Name", text: $viewModel.editedCategory.name)
-                    .textFieldStyle(.plain)
-                    .padding(12)
-                    .background {
-                        RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(.gray, lineWidth: 1)
-                    }
+                    .textFieldStyle(RoundedTextFieldStyle())
             }
             
             Spacer()
         }
         .padding(.horizontal, 12)
+        .background(Color.BackgroundColor)
         .navigationTitle(viewModel.editedCategory.name)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(

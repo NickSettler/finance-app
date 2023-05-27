@@ -40,10 +40,27 @@ struct CategoriesView: View {
                 }
             }
             .listRowBackground(Color.BackgroundColor)
+            .swipeActions(edge: .trailing) {
+                Button(role: .destructive) {
+                    viewModel.deletingCategory = viewModel.categories[index]
+                } label: {
+                    Label("Delete", systemImage: "trash.fill")
+                }
+            }
         }
         .listStyle(.grouped)
         .background(Color.BackgroundColor)
         .scrollContentBackground(.hidden)
+        .confirmationDialog(
+            "Are you sure?",
+            isPresented: $viewModel.deletingPopoverShown
+        ) {
+            Button("Delete category", role: .destructive) {
+                viewModel.deleteCategory()
+            }
+        } message: {
+            Text("This action cannot be undone")
+        }
         .refreshable {
             Task {
                 await viewModel.getUserCategories()
