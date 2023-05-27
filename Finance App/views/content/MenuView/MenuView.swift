@@ -26,6 +26,9 @@ struct MenuView: View {
                     HomeView()
                         .tag(MenuTabModel.home)
                     
+                    TransactionsView()
+                        .tag(MenuTabModel.transactions)
+                    
                     UserMenuView(size: size, safeArea: safeArea)
                         .tag(MenuTabModel.settings)
                 }

@@ -114,18 +114,6 @@ struct HomeView: View {
                     .font(.headline)
                     .fontWeight(.semibold)
                     .foregroundColor(.TextColorPrimary)
-                
-                Spacer()
-                
-                
-                if viewModel.recentTransactions.count > 0 {
-                    NavigationLink {
-                        TransactionsView()
-                    } label: {
-                        Text("Show all")
-                            .font(.caption.bold())
-                    }
-                }
             }
             
             if viewModel.recentTransactions.count > 0 {
