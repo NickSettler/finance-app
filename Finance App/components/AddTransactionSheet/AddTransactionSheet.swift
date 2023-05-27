@@ -101,6 +101,16 @@ struct AddTransactionSheet: View {
                     .foregroundColor(.TextColorPrimary)
             }
             
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Notes")
+                    .font(.headline)
+                    .foregroundColor(.TextColorPrimary)
+                
+                TextField("Notes", text: $viewModel.currentTransaction.notes ?? "", axis: .vertical)
+                    .textFieldStyle(RoundedTextFieldStyle())
+                    .lineLimit(4)
+            }
+            
             Button {
                 viewModel.save()
                 presentationMode.wrappedValue.dismiss()

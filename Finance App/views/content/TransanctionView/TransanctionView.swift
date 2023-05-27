@@ -51,6 +51,17 @@ struct TransanctionView: View {
                     .foregroundColor(.TextColorPrimary)
             }
             
+            if let notes = viewModel.currentTransanction.notes {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Notes")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                    
+                    Text(notes)
+                        .foregroundColor(.TextColorPrimary)
+                }
+            }
+            
             Spacer()
         }
         .sheet(isPresented: $viewModel.showEditingSheet) {
