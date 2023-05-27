@@ -22,6 +22,16 @@ import FirebaseAuth
     
     private(set) var currentUser: User?
     
+    var photoUrl: URL? {
+        get {
+            if let url = currentUser?.photoURL {
+                return url
+            }
+            
+            return URL(string: "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg")
+        }
+    }
+    
     var balance: Double {
         get {
             self.transactions.reduce(self.userData?.balance ?? 0) { sum, transaction in

@@ -13,6 +13,47 @@ struct HomeView: View {
     
     @StateObject private var viewModel = HomeViewModel()
     
+    var openSettings: () -> ()
+    
+    var profile : some View {
+        HStack(alignment: .center, spacing: 16) {
+            AsyncImage(
+                url: viewModel.photoUrl,
+                content: { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                },
+                placeholder: {
+                    ProgressView()
+                })
+            .clipShape(Circle())
+            .frame(width: 48)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Hello \(viewModel.userData?.first_name ?? "there")")
+                    .font(.headline)
+                    .foregroundColor(.TextColorPrimary)
+                
+                Text("Welcome back")
+                    .font(.footnote)
+                    .foregroundColor(.TextColorSecondary)
+            }
+            
+            Spacer()
+            
+            Button {
+                openSettings()
+            } label: {
+                Image(systemName: "gearshape")
+            }
+            .foregroundColor(.TextColorPrimary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
+    }
+    
     var balance : some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Your balance")
@@ -80,8 +121,7 @@ struct HomeView: View {
                 .frame(maxWidth: 1, maxHeight: 32)
                 .overlay(Color.TextColorSecondary.opacity(0.3))
             
-            action("house.fill", "Colors") {
-                print("HI")
+            action("swatchpalette", "Colors") {
                 changeDarkMode(state: !isDarkMode)
             }
             .frame(maxWidth: .infinity)
@@ -165,6 +205,8 @@ struct HomeView: View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .center) {
+                    profile
+                    
                     balance
                     
                     Divider()
@@ -185,6 +227,10 @@ struct HomeView: View {
             }
             .background(Color.BackgroundColor)
         }
+        .refreshable {
+            viewModel.fetchTransactions()
+            viewModel.fetchUserData()
+        }
         .onAppear {
             viewModel.fetchTransactions()
             viewModel.fetchUserData()
@@ -200,6 +246,10 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(
+            openSettings: {
+                //
+            }
+        )
     }
 }

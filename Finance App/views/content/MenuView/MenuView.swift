@@ -23,8 +23,10 @@ struct MenuView: View {
             let safeArea = $0.safeAreaInsets
             VStack(spacing: 0) {
                 TabView(selection: $viewModel.activeTab) {
-                    HomeView()
-                        .tag(MenuTabModel.home)
+                    HomeView(openSettings: {
+                        viewModel.activeTab = MenuTabModel.settings
+                    })
+                    .tag(MenuTabModel.home)
                     
                     TransactionsView()
                         .tag(MenuTabModel.transactions)
