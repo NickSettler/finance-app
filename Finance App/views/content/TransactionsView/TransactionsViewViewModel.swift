@@ -27,6 +27,17 @@ import FirebaseAuth
     
     @Published var direction: Int = 0
     
+    @Published var deletingTransaction: Transaction?
+    
+    var isDeletingModalShown: Bool {
+        get {
+            return self.deletingTransaction != nil
+        }
+        set {
+            //
+        }
+    }
+    
     private var initialAfterDate: Date {
         guard let firstTransaction = self.transactions
             .sorted(by: \.timestamp.seconds, using: (<))
@@ -95,5 +106,19 @@ import FirebaseAuth
         direction = 0
         
         applyFilters()
+    }
+    
+    func deleteTransaction() {
+        Task {
+            guard let uid = self.currentUser?.uid else { return }
+            
+            guard let transaction = self.deletingTransaction else { return }
+            
+            _ = await transaction.delete(from: "\(FirestoreCollection.USER_DATA.rawValue)/\(uid)/\(FirestoreCollection.TRANSACTIONS.rawValue)")
+            
+            self.deletingTransaction = nil
+            
+            self.fetchTransactions()
+        }
     }
 }

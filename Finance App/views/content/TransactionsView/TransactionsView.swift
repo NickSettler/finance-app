@@ -106,14 +106,34 @@ struct TransactionsView: View {
     }
     
     var transactionsList: some View {
-        List(viewModel.filteredTransactions, id: \.id) { transaction in
+        List(
+            viewModel.filteredTransactions,
+            id: \.id
+        ) { transaction in
             TransactionListItem(transaction: transaction)
                 .listRowBackground(Color.BackgroundColor)
                 .background(Color.BackgroundColor)
+                .swipeActions {
+                    Button(role: .destructive) {
+                        viewModel.deletingTransaction = transaction
+                    } label: {
+                        Label("Delete transaction", systemImage: "trash.fill")
+                    }
+                }
         }
         .listStyle(.grouped)
         .background(Color.BackgroundColor)
         .scrollContentBackground(.hidden)
+        .confirmationDialog(
+            "Are you sure?",
+            isPresented: $viewModel.isDeletingModalShown
+        ) {
+            Button("Delete transaction", role: .destructive) {
+                viewModel.deleteTransaction()
+            }
+        } message: {
+            Text("This action cannot be undone")
+        }
     }
     
     
