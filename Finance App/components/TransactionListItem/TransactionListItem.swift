@@ -30,9 +30,15 @@ struct TransactionListItem: View {
                     .fontWeight(.medium)
                     .foregroundColor(.TextColorPrimary)
                 
-                Text("Transfer")
-                    .font(.footnote)
-                    .foregroundColor(.TextColorSecondary)
+                HStack(alignment: .firstTextBaseline, spacing: 2) {
+                    Image(systemName: transaction.amount < 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
+                        .font(.caption2)
+                        .foregroundColor(.TextColorSecondary)
+                    
+                    Text(transaction.amount < 0 ? "Expense" : "Income")
+                        .font(.footnote)
+                        .foregroundColor(.TextColorSecondary)
+                }
             }
             
             Spacer()
