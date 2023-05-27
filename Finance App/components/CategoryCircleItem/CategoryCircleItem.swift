@@ -33,7 +33,10 @@ struct CategoryCircleItem: View {
             
             Text(category.name)
                 .foregroundColor(selected ?? false ? Color.TextColorPrimary : Color.TextColorSecondary)
-                .font(.caption)
+                .font(.caption2)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .frame(width: 44)
         }
     }
 }
@@ -41,7 +44,7 @@ struct CategoryCircleItem: View {
 struct CategoryCircleItem_Previews: PreviewProvider {
     static var previews: some View {
         CategoryCircleItem(
-            category: .init(name: "abc", icon: "house.fill")
+            category: .init(name: "Entertainment", icon: "house.fill")
         )
     }
 }
