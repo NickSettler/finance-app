@@ -15,17 +15,17 @@ import FirebaseAuth
         .init(id: "124", amount: 12, category: unknownCategory, name: "Salary", timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 7)))),
         .init(id: "123", amount: -100, category: unknownCategory, name: "Food", timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 13))))
     ]
+    @Published var categories: [Category] = []
     
     @Published var isSortingDesc: Bool = true
     
     @Published var isFilterSheetPresent: Bool = false
-
     @Published var afterDate: Date?
     @Published var editingAfterDate: Date = .now
     @Published var beforeDate: Date?
     @Published var editingBeforeDate: Date = .now
-    
     @Published var direction: Int = 0
+    @Published var selectedCategories: Set<Category> = []
     
     @Published var deletingTransaction: Transaction?
     
@@ -52,8 +52,9 @@ import FirebaseAuth
         let afterDateChanged = abs(initialAfterDate.timeIntervalSince(editingAfterDate)) > 60 * 60 * 24
         let beforeDateChanged = abs(initialBeforeDate.timeIntervalSince(editingBeforeDate)) > 60 * 60 * 24
         let directionChanged = direction != 0
+        let categoriesChanged = selectedCategories.count > 0
         
-        return afterDateChanged || beforeDateChanged || directionChanged
+        return afterDateChanged || beforeDateChanged || directionChanged || categoriesChanged
     }
     
     var filteredTransactions: [Transaction] {
@@ -62,10 +63,13 @@ import FirebaseAuth
                 let isAfterDateMatch = (afterDate ?? transaction.timestamp.dateValue()) <= transaction.timestamp.dateValue()
                 let isBeforeDateMatch = (beforeDate ?? transaction.timestamp.dateValue()) >= transaction.timestamp.dateValue()
                 
-                let satisfyDirection = direction == 1 && transaction.amount > 0 || direction == -1 && transaction.amount < 0
                 let checkDirection = direction != 0
+                let satisfyDirection = direction == 1 && transaction.amount > 0 || direction == -1 && transaction.amount < 0
                 
-                return isAfterDateMatch && isBeforeDateMatch && (!checkDirection || satisfyDirection)
+                let checkCategory = selectedCategories.count > 0
+                let satisfyCategory = selectedCategories.contains(transaction.category)
+                
+                return isAfterDateMatch && isBeforeDateMatch && (!checkDirection || satisfyDirection) && (!checkCategory || satisfyCategory)
             }
             .sorted(by: \.timestamp.seconds, using: isSortingDesc ? (>) : (<))
     }
@@ -80,6 +84,18 @@ import FirebaseAuth
             
             do {
                 self.transactions = try await TransactionService.getTransactions(for: uid).get()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func fetchCategories() {
+        Task {
+            guard let uid = self.currentUser?.uid else { return }
+            
+            do {
+                self.categories = try await CategoryService.getCategories(for: uid).get()
             } catch {
                 print(error)
             }
@@ -104,6 +120,7 @@ import FirebaseAuth
         editingAfterDate = initialAfterDate
         editingBeforeDate = initialBeforeDate
         direction = 0
+        selectedCategories = []
         
         applyFilters()
     }

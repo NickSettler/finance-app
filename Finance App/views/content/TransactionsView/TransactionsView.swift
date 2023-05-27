@@ -77,6 +77,30 @@ struct TransactionsView: View {
                     .pickerStyle(.segmented)
                 }
                 
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Categories")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .center, spacing: 20) {
+                            ForEach(viewModel.categories, id: \.id) { category in
+                                CategoryCircleItem(
+                                    category: category,
+                                    selected: viewModel.selectedCategories.contains(category)
+                                )
+                                .onTapGesture {
+                                    withAnimation(.easeInOut(duration: 0.15)) {
+                                        viewModel.selectedCategories.toggle(category)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                    }
+                    .padding(.horizontal, -16)
+                }
+                
                 Spacer()
                 Button {
                     viewModel.resetFilters()
@@ -187,9 +211,11 @@ struct TransactionsView: View {
         }
         .background(Color.BackgroundColor)
         .onAppear {
+            viewModel.fetchCategories()
             viewModel.fetchTransactions()
         }
         .refreshable {
+            viewModel.fetchCategories()
             viewModel.fetchTransactions()
         }
     }
