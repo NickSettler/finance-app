@@ -19,7 +19,7 @@ enum MenuTabModel : String, CaseIterable {
         case .transactions:
             return "arrow.left.arrow.right"
         case .settings:
-            return "gear"
+            return "gearshape"
         }
     }
     
