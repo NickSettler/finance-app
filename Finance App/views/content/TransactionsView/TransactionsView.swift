@@ -28,7 +28,7 @@ struct TransactionsView: View {
         NavigationView {
             VStack(spacing: 12) {
                 DatePicker(
-                    selection: $viewModel.editingAfterDate,
+                    selection: $viewModel.afterDate,
                     in: ...Date.now,
                     displayedComponents: .date
                 ) {
@@ -36,15 +36,15 @@ struct TransactionsView: View {
                         .font(.headline)
                         .foregroundColor(.TextColorPrimary)
                 }
-                .onChange(of: viewModel.editingAfterDate) { value in
-                    viewModel.editingBeforeDate = max(
+                .onChange(of: viewModel.afterDate) { value in
+                    viewModel.beforeDate = max(
                         value,
-                        viewModel.editingBeforeDate
+                        viewModel.afterDate
                     )
                 }
                 
                 DatePicker(
-                    selection: $viewModel.editingBeforeDate,
+                    selection: $viewModel.beforeDate,
                     in: ...Date.now,
                     displayedComponents: .date
                 ) {
@@ -52,10 +52,10 @@ struct TransactionsView: View {
                         .font(.headline)
                         .foregroundColor(.TextColorPrimary)
                 }
-                .onChange(of: viewModel.editingBeforeDate) { value in
-                    viewModel.editingAfterDate = min(
+                .onChange(of: viewModel.beforeDate) { value in
+                    viewModel.afterDate = min(
                         value,
-                        viewModel.editingAfterDate
+                        viewModel.beforeDate
                     )
                 }
                 
@@ -116,13 +116,8 @@ struct TransactionsView: View {
             .padding(16)
             .background(Color.BackgroundColor)
             .navigationBarItems(
-                leading: Button {
-                    viewModel.isFilterSheetPresent = false
-                } label: {
-                    Text("Close")
-                },
                 trailing: Button {
-                    viewModel.applyFilters()
+                    viewModel.isFilterSheetPresent = false
                 } label: {
                     Text("Apply")
                 }

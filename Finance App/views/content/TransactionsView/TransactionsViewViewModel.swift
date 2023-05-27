@@ -11,19 +11,14 @@ import FirebaseAuth
 @MainActor class TransactionsViewViewModel : ObservableObject {
     private(set) var currentUser: User?
     
-    @Published var transactions: [Transaction] = [
-        .init(id: "124", amount: 12, category: unknownCategory, name: "Salary", timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 7)))),
-        .init(id: "123", amount: -100, category: unknownCategory, name: "Food", timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 13))))
-    ]
+    @Published var transactions: [Transaction] = []
     @Published var categories: [Category] = []
     
     @Published var isSortingDesc: Bool = true
     
     @Published var isFilterSheetPresent: Bool = false
-    @Published var afterDate: Date?
-    @Published var editingAfterDate: Date = .now
-    @Published var beforeDate: Date?
-    @Published var editingBeforeDate: Date = .now
+    @Published var afterDate: Date = .now
+    @Published var beforeDate: Date = .now
     @Published var direction: Int = 0
     @Published var selectedCategories: Set<Category> = []
     
@@ -49,8 +44,8 @@ import FirebaseAuth
     private var initialBeforeDate: Date = .now
     
     var canReset: Bool {
-        let afterDateChanged = abs(initialAfterDate.timeIntervalSince(editingAfterDate)) > 60 * 60 * 24
-        let beforeDateChanged = abs(initialBeforeDate.timeIntervalSince(editingBeforeDate)) > 60 * 60 * 24
+        let afterDateChanged = abs(initialAfterDate.timeIntervalSince(afterDate)) > 60 * 60 * 24
+        let beforeDateChanged = abs(initialBeforeDate.timeIntervalSince(beforeDate)) > 60 * 60 * 24
         let directionChanged = direction != 0
         let categoriesChanged = selectedCategories.count > 0
         
@@ -58,20 +53,27 @@ import FirebaseAuth
     }
     
     var filteredTransactions: [Transaction] {
-        self.transactions
-            .filter { transaction in
-                let isAfterDateMatch = (afterDate ?? transaction.timestamp.dateValue()) <= transaction.timestamp.dateValue()
-                let isBeforeDateMatch = (beforeDate ?? transaction.timestamp.dateValue()) >= transaction.timestamp.dateValue()
-                
-                let checkDirection = direction != 0
-                let satisfyDirection = direction == 1 && transaction.amount > 0 || direction == -1 && transaction.amount < 0
-                
-                let checkCategory = selectedCategories.count > 0
-                let satisfyCategory = selectedCategories.contains(transaction.category)
-                
-                return isAfterDateMatch && isBeforeDateMatch && (!checkDirection || satisfyDirection) && (!checkCategory || satisfyCategory)
-            }
-            .sorted(by: \.timestamp.seconds, using: isSortingDesc ? (>) : (<))
+        get {
+            self.transactions
+                .filter { transaction in
+                    let isAfterDateMatch = afterDate.timeIntervalSince(transaction.timestamp.dateValue()) <= 0
+                    let isBeforeDateMatch = beforeDate.timeIntervalSince(transaction.timestamp.dateValue()) >= 0
+                    
+                    let checkDirection = direction != 0
+                    let satisfyDirection = direction == 1 && transaction.amount > 0 || direction == -1 && transaction.amount < 0
+                    
+                    let checkCategory = selectedCategories.count > 0
+                    let satisfyCategory = selectedCategories.contains {
+                        $0.id == transaction.category.documentID
+                    }
+                    
+                    return isAfterDateMatch && isBeforeDateMatch && (!checkDirection || satisfyDirection) && (!checkCategory || satisfyCategory)
+                }
+                .sorted(by: \.timestamp.seconds, using: isSortingDesc ? (>) : (<))
+        }
+        set {
+            //
+        }
     }
     
     init() {
@@ -84,6 +86,8 @@ import FirebaseAuth
             
             do {
                 self.transactions = try await TransactionService.getTransactions(for: uid).get()
+                
+                resetFilters()
             } catch {
                 print(error)
             }
@@ -104,7 +108,7 @@ import FirebaseAuth
     
     func resetFilters() {
         afterDate = initialAfterDate
-        beforeDate = initialBeforeDate
+        beforeDate = .now
         direction = 0
         selectedCategories = []
         
