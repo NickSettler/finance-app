@@ -41,6 +41,34 @@ struct UserMenuView: View {
         .buttonStyle(.plain)
     }
     
+    @ViewBuilder
+    func menuListItem(
+        _ title: String,
+        _ icon: String,
+        _ action: @escaping () -> ()
+    ) -> some View {
+        Button {
+            action()
+        } label: {
+            HStack(alignment: .center, spacing: 12) {
+                Image(systemName: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 14, height: 14, alignment: .center)
+                    .foregroundColor(Color.TextColorSecondary)
+                
+                Text(title)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
+            .foregroundColor(Color.TextColorPrimary)
+            .background(Color.BackgroundColor)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .buttonStyle(.plain)
+    }
+    
     var body: some View {
         NavigationView {
             ScrollViewReader { scrollProxy in
@@ -67,6 +95,12 @@ struct UserMenuView: View {
                                 
                                 menuListItem("Categories", "bag") {
                                     CategoriesView()
+                                }
+                                
+                                Divider()
+                                
+                                menuListItem("Log out", "rectangle.portrait.and.arrow.right") {
+                                    viewModel.logOut()
                                 }
                                 
                                 Divider()
@@ -109,7 +143,7 @@ struct UserMenuView: View {
         GeometryReader { _ in
             ZStack {
                 Rectangle()
-                    .fill(Color.Accent)
+                    .fill(Color.Accent.gradient)
                 
                 VStack (spacing: 16) {
                     GeometryReader {

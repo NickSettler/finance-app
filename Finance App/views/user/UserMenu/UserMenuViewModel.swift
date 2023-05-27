@@ -47,4 +47,12 @@ import FirebaseFirestore
         
         return currentUser!.photoURL!
     }
+    
+    func logOut() {
+        do {
+            _ = try Auth.auth().signOut()
+        } catch {
+            print(error)
+        }
+    }
 }
