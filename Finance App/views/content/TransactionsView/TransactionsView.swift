@@ -33,6 +33,8 @@ struct TransactionsView: View {
                     displayedComponents: .date
                 ) {
                     Text("After: ")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
                 }
                 .onChange(of: viewModel.editingAfterDate) { value in
                     viewModel.editingBeforeDate = max(
@@ -47,6 +49,8 @@ struct TransactionsView: View {
                     displayedComponents: .date
                 ) {
                     Text("Before: ")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
                 }
                 .onChange(of: viewModel.editingBeforeDate) { value in
                     viewModel.editingAfterDate = min(
@@ -55,8 +59,25 @@ struct TransactionsView: View {
                     )
                 }
                 
-                Spacer()
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Direction")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                    
+                    Picker("Direction", selection: $viewModel.direction) {
+                        Text("All")
+                            .tag(0)
+                        
+                        Text("Exponse")
+                            .tag(-1)
+                        
+                        Text("Income")
+                            .tag(1)
+                    }
+                    .pickerStyle(.segmented)
+                }
                 
+                Spacer()
                 Button {
                     viewModel.resetFilters()
                 } label: {
@@ -86,34 +107,18 @@ struct TransactionsView: View {
     
     var transactionsList: some View {
         List(viewModel.filteredTransactions, id: \.id) { transaction in
-            HStack(alignment: .center, spacing: 20) {
-                let isExpense = transaction.amount < 0
-                
-                Image(systemName: isExpense ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
-                    .font(.title3)
-                    .foregroundColor(isExpense ? .red : .green)
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(alignment: .top, spacing: 4) {
-                        Text("\(transaction.name ?? "")")
-                        Spacer()
-                        Text(transaction.timestamp.dateValue(), style: .relative)
-                            .font(.caption2)
-                    }
-                    
-                    Text("\(transaction.amount.formatted(.currency(code: "CZK")))")
-                        .font(.caption)
-                }
-            }
+            TransactionListItem(transaction: transaction)
+                .listRowBackground(Color.BackgroundColor)
+                .background(Color.BackgroundColor)
         }
         .listStyle(.grouped)
-        .background(colorScheme == .light ? .white : .black)
+        .background(Color.BackgroundColor)
         .scrollContentBackground(.hidden)
     }
     
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
                 Button {
                     withAnimation(.easeInOut(duration: 0.3)) {
@@ -150,14 +155,17 @@ struct TransactionsView: View {
                 List {
                     noTransactions
                         .listRowSeparatorTint(.clear)
-                        .listRowBackground(Color.clear)
+                        .listRowBackground(Color.BackgroundColor)
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
+                .background(Color.BackgroundColor)
                 .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             } else {
                 transactionsList
             }
         }
+        .background(Color.BackgroundColor)
         .onAppear {
             viewModel.fetchTransactions()
         }

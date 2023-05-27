@@ -12,8 +12,8 @@ import FirebaseAuth
     private(set) var currentUser: User?
     
     @Published var transactions: [Transaction] = [
-        .init(id: "124", name: "Salary", amount: 12, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 7)))),
-        .init(id: "123", name: "Food", amount: -100, timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 13))))
+        .init(id: "124", amount: 12, category: unknownCategory, name: "Salary", timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 7)))),
+        .init(id: "123", amount: -100, category: unknownCategory, name: "Food", timestamp: .init(date: .now.addingTimeInterval(TimeInterval(-60 * 60 * 24 * 13))))
     ]
     
     @Published var isSortingDesc: Bool = true
@@ -24,6 +24,8 @@ import FirebaseAuth
     @Published var editingAfterDate: Date = .now
     @Published var beforeDate: Date?
     @Published var editingBeforeDate: Date = .now
+    
+    @Published var direction: Int = 0
     
     private var initialAfterDate: Date {
         guard let firstTransaction = self.transactions
@@ -38,8 +40,9 @@ import FirebaseAuth
     var canReset: Bool {
         let afterDateChanged = abs(initialAfterDate.timeIntervalSince(editingAfterDate)) > 60 * 60 * 24
         let beforeDateChanged = abs(initialBeforeDate.timeIntervalSince(editingBeforeDate)) > 60 * 60 * 24
+        let directionChanged = direction != 0
         
-        return afterDateChanged || beforeDateChanged
+        return afterDateChanged || beforeDateChanged || directionChanged
     }
     
     var filteredTransactions: [Transaction] {
@@ -48,7 +51,10 @@ import FirebaseAuth
                 let isAfterDateMatch = (afterDate ?? transaction.timestamp.dateValue()) <= transaction.timestamp.dateValue()
                 let isBeforeDateMatch = (beforeDate ?? transaction.timestamp.dateValue()) >= transaction.timestamp.dateValue()
                 
-                return isAfterDateMatch && isBeforeDateMatch
+                let satisfyDirection = direction == 1 && transaction.amount > 0 || direction == -1 && transaction.amount < 0
+                let checkDirection = direction != 0
+                
+                return isAfterDateMatch && isBeforeDateMatch && (!checkDirection || satisfyDirection)
             }
             .sorted(by: \.timestamp.seconds, using: isSortingDesc ? (>) : (<))
     }
@@ -86,6 +92,7 @@ import FirebaseAuth
     func resetFilters() {
         editingAfterDate = initialAfterDate
         editingBeforeDate = initialBeforeDate
+        direction = 0
         
         applyFilters()
     }
