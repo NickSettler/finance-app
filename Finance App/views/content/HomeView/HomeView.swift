@@ -32,10 +32,34 @@ struct HomeView: View {
     
     var actions : some View {
         HStack (alignment: .center) {
-            action("house.fill", "Send") {
-                print("sending money")
+            action("plus", "Add") {
+                viewModel.showAddTransactionSheet = true
             }
             .frame(maxWidth: .infinity)
+            .sheet(isPresented: $viewModel.showAddTransactionSheet) {
+                NavigationView {
+                    if #available(iOS 16.4, *) {
+                        AddTransactionSheet(transaction: .init(
+                            get: {
+                                .init(amount: 0, category: unknownCategory, name: "", timestamp: .init(date: .now))
+                            },
+                            set: { transaction in
+                                viewModel.createTransaction(transaction)
+                            })
+                        )
+                        .presentationBackground(.thinMaterial)
+                    } else {
+                        AddTransactionSheet(transaction: .init(
+                            get: {
+                                .init(amount: 0, category: unknownCategory, name: "", timestamp: .init(date: .now))
+                            },
+                            set: { transaction in
+                                viewModel.createTransaction(transaction)
+                            })
+                        )
+                    }
+                }
+            }
             
             Divider()
                 .frame(maxWidth: 1, maxHeight: 32)
@@ -62,6 +86,7 @@ struct HomeView: View {
         .background {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.ColorPrimary)
+                .shadow(color: .TextColorPrimary.opacity(0.08), radius: 8, y: 2)
         }
     }
     
@@ -88,25 +113,28 @@ struct HomeView: View {
                 Text("Transactions")
                     .font(.headline)
                     .fontWeight(.semibold)
+                    .foregroundColor(.TextColorPrimary)
                 
                 Spacer()
                 
-                Picker("Dates", selection: .constant(1)) {
-                    ForEach (0...6, id: \.self) { i in
-                        Text("\(i)")
+                
+                if viewModel.recentTransactions.count > 0 {
+                    NavigationLink {
+                        TransactionsView()
+                    } label: {
+                        Text("Show all")
+                            .font(.caption.bold())
                     }
                 }
-                .tint(.ColorPrimary)
-                .pickerStyle(.menu)
             }
             
             if viewModel.recentTransactions.count > 0 {
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
-                    Text(123.2, format: .currency(code: "CZK"))
+                    Text(viewModel.recentSpent, format: .currency(code: "CZK"))
                         .font(.title3)
                         .fontWeight(.medium)
                     
-                    Text("spent in March")
+                    Text("recently spent")
                         .font(.caption)
                 }
                 
@@ -126,78 +154,46 @@ struct HomeView: View {
         .background {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.ColorPrimary)
+                .shadow(color: .TextColorPrimary.opacity(0.08), radius: 8, y: 2)
         }
     }
     
     var operationsList : some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack {
-                ForEach(viewModel.recentTransactions, id: \.id) { transaction in
-                    HStack(alignment: .center, spacing: 8) {
-                        let category = viewModel.categories.first {
-                            $0.id == transaction.id
-                        } ?? unknownCategory
-                        
-                        Image(systemName: "\(category.icon)")
-                            .padding(8)
-                            .frame(
-                                width: 40,
-                                height: 40
-                            )
-                            .foregroundColor(.TextColorPrimary)
-                            .background {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.TextColorPrimary.opacity(0.12))
-                            }
-                        
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("\(transaction.name ?? "")")
-                                .fontWeight(.medium)
-                                .foregroundColor(.TextColorPrimary)
-                            
-                            Text("Transfer")
-                                .font(.footnote)
-                                .foregroundColor(.TextColorSecondary)
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text(transaction.amount, format: .currency(code: "CZK"))
-                                .font(.callout)
-                                .foregroundColor(.TextColorPrimary)
-                            
-                            Text(transaction.timestamp.dateValue(), style: .time)
-                                .font(.footnote)
-                                .foregroundColor(.TextColorSecondary)
-                        }
-                    }
+        VStack {
+            ForEach(viewModel.recentTransactions, id: \.id) { transaction in
+                TransactionListItem(transaction: transaction)
                     .padding(.bottom, 8)
-                }
             }
         }
     }
     
     var body: some View {
-        VStack(alignment: .center) {
-            balance
-            
-            Divider()
-                .overlay(Color.TextColorSecondary.opacity(0.3))
-            
-            VStack(alignment: .center, spacing: 12) {
-                actions
-                    .padding(.all, 16)
-                    .padding(.top, 8)
-                
-                operations
-                    .padding(.horizontal, 16)
+        NavigationView {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .center) {
+                    balance
+                    
+                    Divider()
+                        .overlay(Color.TextColorSecondary.opacity(0.3))
+                    
+                    VStack(alignment: .center, spacing: 12) {
+                        actions
+                            .padding(.all, 16)
+                            .padding(.top, 8)
+                        
+                        operations
+                            .padding(.horizontal, 16)
+                    }
+                    .padding(.bottom, 20)
+                    
+                    Spacer()
+                }
             }
-            .padding(.bottom, 20)
-            
-            Spacer()
+            .background(Color.BackgroundColor)
         }
-        .background(Color.BackgroundColor)
+        .onAppear {
+            viewModel.fetchTransactions()
+        }
     }
     
     func changeDarkMode(state: Bool) {
