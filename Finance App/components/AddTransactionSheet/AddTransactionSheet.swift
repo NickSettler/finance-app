@@ -16,39 +16,11 @@ struct AddTransactionSheet: View {
         self._viewModel = StateObject(wrappedValue: AddTransactionSheetModel(transaction: transaction))
     }
     
-    @ViewBuilder
-    func categoryItem(
-        _ category: Category,
-        _ completion: @escaping (Category) -> ()
-    ) -> some View {
-        VStack(alignment: .center, spacing: 4) {
-            Image(systemName: "\(category.icon)")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 20, height: 20, alignment: .center)
-                .foregroundColor(
-                    viewModel.currentTransaction.category == category ? Color.TextColorPrimary : Color.TextColorSecondary)
-                .padding(12)
-                .background {
-                    Circle()
-                        .strokeBorder(viewModel.currentTransaction.category == category ? Color.Accent : Color.TextColorSecondary, lineWidth: 1)
-                        .background(Circle().fill(viewModel.currentTransaction.category == category ? Color.Accent.opacity(0.5) : Color.clear))
-                }
-            
-            Text(category.name)
-                .foregroundColor(viewModel.currentTransaction.category == category ? Color.TextColorPrimary : Color.TextColorSecondary)
-                .font(.caption)
-        }
-        .onTapGesture {
-            completion(category)
-        }
-    }
-    
     let amountFormatter: NumberFormatter = {
-              let formatter = NumberFormatter()
-              formatter.zeroSymbol = ""
-              return formatter
-         }()
+        let formatter = NumberFormatter()
+        formatter.zeroSymbol = ""
+        return formatter
+    }()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -69,18 +41,25 @@ struct AddTransactionSheet: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .center, spacing: 20) {
                         ForEach(viewModel.categories, id: \.id) { category in
-                            categoryItem(category) { cat in
+                            CategoryCircleItem(
+                                category: category,
+                                selected: viewModel.currentTransaction.category == category
+                            )
+                            .onTapGesture {
                                 withAnimation(.easeInOut(duration: 0.15)) {
-                                    if viewModel.currentTransaction.category == cat {
+                                    if viewModel.currentTransaction.category == category {
                                         viewModel.currentTransaction.category = unknownCategory
                                     } else {
-                                        viewModel.currentTransaction.category = cat
+                                        viewModel.currentTransaction.category = category
                                     }
                                 }
                             }
                         }
                         
-                        categoryItem(.init(name: "New", icon: "plus")) { _ in
+                        CategoryCircleItem(
+                            category: .init(name: "New", icon: "plus")
+                        )
+                        .onTapGesture {
                             viewModel.addNewCategorySheetPresent = true
                         }
                     }
@@ -136,6 +115,7 @@ struct AddTransactionSheet: View {
             Spacer()
         }
         .padding(16)
+        .background(Color.BackgroundColor)
         .navigationBarItems(
             leading: Button {
                 presentationMode.wrappedValue.dismiss()
