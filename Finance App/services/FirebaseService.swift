@@ -22,6 +22,10 @@ extension FirebaseIdentifiable {
     func put(to collection: String) async -> Result<Self, Error> {
         return await FirebaseService.shared.put(self, to: collection)
     }
+    
+    func delete(from collection: String) async -> Result<Void, Error> {
+        return await FirebaseService.shared.delete(self, in: collection)
+    }
 }
 
 enum FirestoreCollection : String {
@@ -122,6 +126,22 @@ extension FirebaseService {
             try ref.setData(from: value)
             return .success(value)
         } catch {
+            print("Error: \(#function) in \(collection) for id: \(uid), \(error)")
+            return .failure(error)
+        }
+    }
+    
+    func delete<T: FirebaseIdentifiable>(_ value: T, in collection: String) async -> Result<Void, Error> {
+        guard let uid = value.id else {
+            return .failure("No id value in \(value)")
+        }
+        
+        let ref = database.collection(collection).document(uid)
+        
+        do {
+            try await ref.delete()
+            return .success(())
+        } catch let error {
             print("Error: \(#function) in \(collection) for id: \(uid), \(error)")
             return .failure(error)
         }
