@@ -39,9 +39,11 @@ struct CategoriesView: View {
                     Spacer()
                 }
             }
+            .listRowBackground(Color.BackgroundColor)
         }
         .listStyle(.grouped)
-        .background(.pink)
+        .background(Color.BackgroundColor)
+        .scrollContentBackground(.hidden)
         .refreshable {
             Task {
                 await viewModel.getUserCategories()
@@ -57,6 +59,8 @@ struct CategoriesView: View {
                 list
             }
         }
+        .frame(maxWidth: .infinity)
+        .background(Color.BackgroundColor)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(
             trailing: Button {
