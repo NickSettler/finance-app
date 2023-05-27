@@ -43,7 +43,7 @@ struct CategoryService {
             let categories = try await CategoryService.getCategories(for: id).get()
             
             let data: [Category: Int] = transactions.reduce(into: [:]) { result, transaction in
-                guard let category = categories.first(where: { $0.id == transaction.category?.documentID }) else { return }
+                guard let category = categories.first(where: { $0.id == transaction.category.id }) else { return }
                 
                 result[category, default: 0] += 1
             }

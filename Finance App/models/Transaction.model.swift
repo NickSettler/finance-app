@@ -13,8 +13,8 @@ import FirebaseFirestoreSwift
 struct Transaction : FirebaseIdentifiable {
     @DocumentID var id: String?
     var amount: Double
-    var category: DocumentReference?
-    var name: String?
+    var category: Category
+    var name: String
     var timestamp: Timestamp
     
     enum CodingKeys: CodingKey {
@@ -25,16 +25,18 @@ struct Transaction : FirebaseIdentifiable {
         case timestamp
     }
     
-    init(id: String, amount: Double, timestamp: Timestamp) {
-        self.id = id
+    init(amount: Double, category: Category, name: String, timestamp: Timestamp) {
         self.amount = amount
+        self.category = category
+        self.name = name
         self.timestamp = timestamp
     }
     
-    init(id: String, name: String, amount: Double, timestamp: Timestamp) {
+    init(id: String, amount: Double, category: Category, name: String, timestamp: Timestamp) {
         self.id = id
-        self.name = name
         self.amount = amount
+        self.category = category
+        self.name = name
         self.timestamp = timestamp
     }
 }
