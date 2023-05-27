@@ -105,7 +105,7 @@ struct AddTransactionSheet: View {
                 viewModel.save()
                 presentationMode.wrappedValue.dismiss()
             } label: {
-                Text("Add")
+                Text(viewModel.currentTransaction.id != nil ? "Update" : "Add")
                     .font(.headline)
                     .padding(.vertical, 4)
                     .frame(maxWidth: .infinity)
@@ -126,7 +126,7 @@ struct AddTransactionSheet: View {
                 viewModel.save()
                 presentationMode.wrappedValue.dismiss()
             } label: {
-                Text("Create")
+                Text(viewModel.currentTransaction.id != nil ? "Update" : "Add")
             }
         )
         .sheet(isPresented: $viewModel.addNewCategorySheetPresent) {
