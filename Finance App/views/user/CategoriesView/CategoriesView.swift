@@ -31,9 +31,14 @@ struct CategoriesView: View {
             } label: {
                 HStack(alignment: .center, spacing: 12) {
                     Image(systemName: viewModel.categories[index].icon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 18)
+                        .foregroundColor(.TextColorSecondary)
                     
                     VStack(alignment: .leading) {
                         Text("\(viewModel.categories[index].name)")
+                            .foregroundColor(.TextColorPrimary)
                     }
                     
                     Spacer()

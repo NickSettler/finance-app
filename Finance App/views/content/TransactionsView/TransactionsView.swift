@@ -114,6 +114,7 @@ struct TransactionsView: View {
                 .disabled(!viewModel.canReset)
             }
             .padding(16)
+            .background(Color.BackgroundColor)
             .navigationBarItems(
                 leading: Button {
                     viewModel.isFilterSheetPresent = false
