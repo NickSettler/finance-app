@@ -8,12 +8,20 @@
 import SwiftUI
 
 struct TransactionListItem: View {
-    @State var transaction: Transaction
-    @State var colorAmount: Bool = false
+    var transaction: Transaction
+    var categories: [Category]
+    
+    var category: Category {
+        get {
+            return categories.first {
+                $0.id == transaction.category.documentID
+            } ?? unknownCategory
+        }
+    }
     
     var body: some View {
         HStack(alignment: .center, spacing: 8) {
-            Image(systemName: "\(transaction.category.icon)")
+            Image(systemName: "\(category.icon)")
                 .padding(8)
                 .frame(
                     width: 40,
@@ -46,10 +54,7 @@ struct TransactionListItem: View {
             VStack(alignment: .trailing, spacing: 2) {
                 Text(transaction.amount, format: .currency(code: "CZK"))
                     .font(.callout)
-                    .foregroundColor(
-                        colorAmount ?
-                        (transaction.amount < 0 ? .red : .green) :
-                                .TextColorPrimary)
+                    .foregroundColor(.TextColorPrimary)
                 
                 Text(transaction.timestamp.dateValue(), style: .time)
                     .font(.footnote)
@@ -64,10 +69,15 @@ struct TransactionListItem_Previews: PreviewProvider {
         TransactionListItem(
             transaction: .init(
                 amount: 12,
-                category: .init(name: "Home", icon: "house.fill"),
+                category: FirebaseService.shared.database
+                    .collection("CATS")
+                    .document("abc"),
                 name: "Something",
                 timestamp: .init(date: .now)
-            )
+            ),
+            categories: [
+                .init(id: "abc", name: "test", icon: "house.fill")
+            ]
         )
     }
 }

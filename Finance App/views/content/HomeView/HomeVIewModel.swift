@@ -59,6 +59,18 @@ import FirebaseAuth
         self.currentUser = Auth.auth().currentUser
     }
     
+    func fetchCategories() {
+        Task {
+            do {
+                guard let uid = self.currentUser?.uid else { return }
+                
+                self.categories = try await CategoryService.getCategories(for: uid).get()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     func fetchTransactions() {
         Task {
             do {

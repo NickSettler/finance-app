@@ -43,14 +43,14 @@ struct AddTransactionSheet: View {
                         ForEach(viewModel.categories, id: \.id) { category in
                             CategoryCircleItem(
                                 category: category,
-                                selected: viewModel.currentTransaction.category == category
+                                selected: viewModel.category == category
                             )
                             .onTapGesture {
                                 withAnimation(.easeInOut(duration: 0.15)) {
-                                    if viewModel.currentTransaction.category == category {
-                                        viewModel.currentTransaction.category = unknownCategory
+                                    if viewModel.category == category {
+                                        viewModel.updateCategory(category: unknownCategory)
                                     } else {
-                                        viewModel.currentTransaction.category = category
+                                        viewModel.updateCategory(category: category)
                                     }
                                 }
                             }
@@ -153,7 +153,8 @@ struct AddTransactionSheet_Previews: PreviewProvider {
             amount: 12,
             category: unknownCategory,
             name: "abc",
-            timestamp: .init(date: .now)
+            timestamp: .init(date: .now),
+            notes: ""
         )
         
         AddTransactionSheet(transaction: .init(

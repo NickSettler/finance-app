@@ -102,27 +102,15 @@ import FirebaseAuth
         }
     }
     
-    func displayFilters() {
-        editingAfterDate = afterDate ?? initialAfterDate
-        editingBeforeDate = beforeDate ?? initialBeforeDate
-        
-        isFilterSheetPresent = true
-    }
-    
-    func applyFilters() {
-        afterDate = editingAfterDate
-        beforeDate = editingBeforeDate
-        
-        isFilterSheetPresent = false
-    }
-    
     func resetFilters() {
-        editingAfterDate = initialAfterDate
-        editingBeforeDate = initialBeforeDate
+        afterDate = initialAfterDate
+        beforeDate = initialBeforeDate
         direction = 0
         selectedCategories = []
         
-        applyFilters()
+        isFilterSheetPresent = false
+        
+        print(self.transactions, self.filteredTransactions)
     }
     
     func deleteTransaction() {

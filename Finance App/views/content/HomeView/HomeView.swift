@@ -196,8 +196,11 @@ struct HomeView: View {
     var operationsList : some View {
         VStack {
             ForEach(viewModel.recentTransactions, id: \.id) { transaction in
-                TransactionListItem(transaction: transaction)
-                    .padding(.bottom, 8)
+                TransactionListItem(
+                    transaction: transaction,
+                    categories: viewModel.categories
+                )
+                .padding(.bottom, 8)
             }
         }
     }
@@ -229,10 +232,12 @@ struct HomeView: View {
             .background(Color.BackgroundColor)
         }
         .refreshable {
+            viewModel.fetchCategories()
             viewModel.fetchTransactions()
             viewModel.fetchUserData()
         }
         .onAppear {
+            viewModel.fetchCategories()
             viewModel.fetchTransactions()
             viewModel.fetchUserData()
         }

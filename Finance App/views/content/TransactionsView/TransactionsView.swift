@@ -132,19 +132,26 @@ struct TransactionsView: View {
     
     var transactionsList: some View {
         List(
-            viewModel.filteredTransactions,
+            $viewModel.filteredTransactions,
             id: \.id
-        ) { transaction in
-            TransactionListItem(transaction: transaction)
-                .listRowBackground(Color.BackgroundColor)
-                .background(Color.BackgroundColor)
-                .swipeActions {
-                    Button(role: .destructive) {
-                        viewModel.deletingTransaction = transaction
-                    } label: {
-                        Label("Delete transaction", systemImage: "trash.fill")
-                    }
+        ) { $transanction in
+            NavigationLink {
+                TransanctionView(transaction: $transanction)
+            } label: {
+                TransactionListItem(
+                    transaction: transanction,
+                    categories: viewModel.categories
+                )
+            }
+            .swipeActions {
+                Button(role: .destructive) {
+                    viewModel.deletingTransaction = transanction
+                } label: {
+                    Label("Delete transaction", systemImage: "trash.fill")
                 }
+            }
+            .listRowBackground(Color.BackgroundColor)
+            .background(Color.BackgroundColor)
         }
         .listStyle(.grouped)
         .background(Color.BackgroundColor)
@@ -163,61 +170,69 @@ struct TransactionsView: View {
     
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .center) {
-                Button {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        viewModel.isSortingDesc.toggle()
+        NavigationView {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .center) {
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            viewModel.isSortingDesc.toggle()
+                        }
+                    } label: {
+                        HStack(alignment: .center, spacing: 8) {
+                            Image(systemName: "chevron.down")
+                                .rotationEffect(.degrees(viewModel.isSortingDesc ? 0 : 180))
+                            
+                            Text(viewModel.isSortingDesc ? "Descending" : "Ascending")
+                        }
                     }
-                } label: {
-                    HStack(alignment: .center, spacing: 8) {
-                        Image(systemName: "chevron.down")
-                            .rotationEffect(.degrees(viewModel.isSortingDesc ? 0 : 180))
-                        
-                        Text(viewModel.isSortingDesc ? "Descending" : "Ascending")
+                    
+                    Spacer()
+                    
+                    Button {
+                        viewModel.isFilterSheetPresent = true
+                    } label: {
+                        HStack(alignment: .center, spacing: 8) {
+                            Image(systemName: "line.3.horizontal.decrease")
+                            
+                            Text("Filter")
+                            
+                            if viewModel.canReset {
+                                Circle()
+                                    .fill(Color.ColorPrimary)
+                                    .frame(width: 8, height: 8)
+                            }
+                        }
                     }
+                    .buttonStyle(.borderedProminent)
+                }
+                .padding(12)
+                .sheet(isPresented: $viewModel.isFilterSheetPresent) {
+                    filterSheet
                 }
                 
-                Spacer()
-                
-                Button {
-                    viewModel.displayFilters()
-                } label: {
-                    HStack(alignment: .center, spacing: 8) {
-                        Image(systemName: "line.3.horizontal.decrease")
-                        
-                        Text("Filter")
+                if viewModel.filteredTransactions.count == 0 {
+                    List {
+                        noTransactions
+                            .listRowSeparatorTint(.clear)
+                            .listRowBackground(Color.BackgroundColor)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     }
+                    .background(Color.BackgroundColor)
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
+                } else {
+                    transactionsList
                 }
-                .buttonStyle(.borderedProminent)
             }
-            .padding(12)
-            .sheet(isPresented: $viewModel.isFilterSheetPresent) {
-                filterSheet
+            .background(Color.BackgroundColor)
+            .onAppear {
+                viewModel.fetchCategories()
+                viewModel.fetchTransactions()
             }
-            
-            if viewModel.filteredTransactions.count == 0 {
-                List {
-                    noTransactions
-                        .listRowSeparatorTint(.clear)
-                        .listRowBackground(Color.BackgroundColor)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                }
-                .background(Color.BackgroundColor)
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
-            } else {
-                transactionsList
+            .refreshable {
+                viewModel.fetchCategories()
+                viewModel.fetchTransactions()
             }
-        }
-        .background(Color.BackgroundColor)
-        .onAppear {
-            viewModel.fetchCategories()
-            viewModel.fetchTransactions()
-        }
-        .refreshable {
-            viewModel.fetchCategories()
-            viewModel.fetchTransactions()
         }
     }
 }
