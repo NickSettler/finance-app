@@ -14,6 +14,7 @@ struct UserData: FirebaseIdentifiable {
     @DocumentID var id: String?
     var first_name: String
     var last_name: String
+    var balance: Double
     var full_name: String {
         get {
             return "\(self.first_name) \(self.last_name)"
@@ -34,5 +35,6 @@ struct UserData: FirebaseIdentifiable {
         case id
         case first_name
         case last_name
+        case balance
     }
 }

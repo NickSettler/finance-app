@@ -65,18 +65,24 @@ struct HomeView: View {
                 .frame(maxWidth: 1, maxHeight: 32)
                 .overlay(Color.TextColorSecondary.opacity(0.3))
             
-            action("house.fill", "Colors") {
-                print("HI")
-                changeDarkMode(state: !isDarkMode)
+            action("pencil", "Balance") {
+                viewModel.showUpdateBalanceSheet = true
             }
             .frame(maxWidth: .infinity)
+            .sheet(isPresented: $viewModel.showUpdateBalanceSheet) {
+                NavigationView {
+                    UpdateBalanceSheet()
+                }
+                .presentationDetents([.medium])
+            }
             
             Divider()
                 .frame(maxWidth: 1, maxHeight: 32)
                 .overlay(Color.TextColorSecondary.opacity(0.3))
             
-            action("house.fill", "Send") {
-                print("sending money")
+            action("house.fill", "Colors") {
+                print("HI")
+                changeDarkMode(state: !isDarkMode)
             }
             .frame(maxWidth: .infinity)
         }

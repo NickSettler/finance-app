@@ -52,4 +52,28 @@ struct UserService {
             return .failure(error)
         }
     }
+    
+    static func updateBalance(by id: String, _ balance: Double) async throws -> Result<Void, Error> {
+        let query = FirebaseService.shared.database
+            .collection(FirestoreCollection.USER_DATA.rawValue)
+        
+        do {
+            let transactions = try await TransactionService.getTransactions(for: id).get()
+            
+            let newBalance = transactions.reduce(balance) { balance, transaction in
+                balance.advanced(by: transaction.amount * -1)
+            }
+            
+            print(newBalance)
+            
+            var data = try await FirebaseService.shared.getOne(of: UserData.self, with: query, by: id).get()
+            data.balance = newBalance
+            
+            _ = await data.put(to: FirestoreCollection.USER_DATA.rawValue)
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
 }
