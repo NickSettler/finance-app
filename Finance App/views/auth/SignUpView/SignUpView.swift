@@ -12,15 +12,20 @@ struct SignUpView: View {
     
     var body: some View {
         VStack(spacing: 12) {
+            Spacer()
+            
             TextField("Email", text: $viewModel.emailString)
+                .textFieldStyle(RoundedTextFieldStyle())
                 .textContentType(.emailAddress)
                 .keyboardType(.emailAddress)
                 .autocorrectionDisabled(true)
                 .textInputAutocapitalization(.never)
             
             SecureField("Password", text: $viewModel.passwordString)
+                .textFieldStyle(RoundedTextFieldStyle())
             
             SecureField("Password confirmation", text: $viewModel.passwordConfirmString)
+                .textFieldStyle(RoundedTextFieldStyle())
             
             Button {
                 viewModel.signUp()
@@ -28,8 +33,11 @@ struct SignUpView: View {
                 Text("Sign Up")
             }
             .buttonStyle(.borderedProminent)
+            
+            Spacer()
         }
         .padding()
+        .background(Color.BackgroundColor)
     }
 }
 

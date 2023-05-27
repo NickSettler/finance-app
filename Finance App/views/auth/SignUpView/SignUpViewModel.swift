@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 @MainActor class SignUpViewModel: ObservableObject {
     @Published var emailString: String = ""
@@ -15,9 +16,23 @@ import Foundation
     @Published private var error: String?
     
     func signUp() {
-        if (passwordString != passwordConfirmString) {
-            error = "Passwords do not match."
-            return
+        Task {
+            if (passwordString != passwordConfirmString) {
+                error = "Passwords do not match."
+                return
+            }
+            
+            do {
+                let authResult = try await Auth.auth().createUser(withEmail: emailString, password: passwordString)
+                
+                _ = try await Auth.auth().signIn(withEmail: emailString, password: passwordString)
+                
+                let uid = authResult.user.uid
+                
+                _ = try await UserService.addAuthHistory(by: uid)
+            } catch {
+                print(error)
+            }
         }
     }
 }
