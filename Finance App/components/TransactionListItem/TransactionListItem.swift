@@ -37,6 +37,8 @@ struct TransactionListItem: View {
                 Text("\(transaction.name)")
                     .fontWeight(.medium)
                     .foregroundColor(.TextColorPrimary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                 
                 HStack(alignment: .firstTextBaseline, spacing: 2) {
                     Image(systemName: transaction.amount < 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
