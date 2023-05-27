@@ -33,7 +33,7 @@ struct CategoriesView: View {
                     Image(systemName: viewModel.categories[index].icon)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 18)
+                        .frame(width: 16, height: 16, alignment: .center)
                         .foregroundColor(.TextColorSecondary)
                     
                     VStack(alignment: .leading) {
