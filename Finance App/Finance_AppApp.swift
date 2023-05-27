@@ -24,6 +24,7 @@ struct Finance_AppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .background(Color.BackgroundColor.edgesIgnoringSafeArea(.all))
         }
     }
 }

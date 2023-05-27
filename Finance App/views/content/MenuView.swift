@@ -32,8 +32,8 @@ struct MenuView: View {
                 
                 CustomTabBar()
             }
-            .background(Color.BackgroundColor)
         }
+        .background(Color.BackgroundColor)
     }
     
     @ViewBuilder

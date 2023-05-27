@@ -19,6 +19,7 @@ struct MainView: View {
             .onDisappear {
                 viewModel.handleViewDisappear()
             }
+            .background(Color.BackgroundColor)
     }
 }
 

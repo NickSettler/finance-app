@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         MainView()
+            .background(Color.BackgroundColor.edgesIgnoringSafeArea(.all))
     }
 }
 
