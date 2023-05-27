@@ -18,10 +18,11 @@ import FirebaseAuth
             }
         }
     }
-    @Published var newBalanceValue: Double = 0
+    @Published var newBalanceValue: Double
     
-    init() {
+    init(balance: Double) {
         self.currentUser = Auth.auth().currentUser
+        self.newBalanceValue = balance
     }
     
     func fetchUserData() {

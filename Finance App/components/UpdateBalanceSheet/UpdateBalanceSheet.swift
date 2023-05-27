@@ -10,7 +10,11 @@ import SwiftUI
 struct UpdateBalanceSheet: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @StateObject private var viewModel = UpdateBalanceSheetModel()
+    @StateObject private var viewModel: UpdateBalanceSheetModel
+    
+    init(balance: Double) {
+        self._viewModel = StateObject(wrappedValue: UpdateBalanceSheetModel(balance: balance))
+    }
     
     let amountFormatter: NumberFormatter = {
               let formatter = NumberFormatter()
@@ -31,6 +35,7 @@ struct UpdateBalanceSheet: View {
             Spacer()
         }
         .padding(16)
+        .background(Color.BackgroundColor)
         .navigationBarItems(
             leading: Button {
                 presentationMode.wrappedValue.dismiss()
@@ -49,6 +54,6 @@ struct UpdateBalanceSheet: View {
 
 struct UpdateBalanceSheet_Previews: PreviewProvider {
     static var previews: some View {
-        UpdateBalanceSheet()
+        UpdateBalanceSheet(balance: 4000)
     }
 }
