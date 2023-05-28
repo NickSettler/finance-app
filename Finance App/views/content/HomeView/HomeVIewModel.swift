@@ -12,28 +12,8 @@ import FirebaseAuth
 @MainActor class HomeViewModel : ObservableObject {
     @AppStorage("categoriesChartMode") var categoriesChartMode: Bool = false
     
-    @Published var transactions: [Transaction] = [
-        .init(
-            id: "123",
-            amount: 120,
-            category: .init(id: "house", name: "House", icon: "house.fill"),
-            name: "Something",
-            timestamp: .init(date: .now),
-            notes: ""
-        ),
-        .init(
-            id: "123",
-            amount: 120,
-            category: .init(id: "cat", name: "Cat", icon: "house.fill"),
-            name: "Something",
-            timestamp: .init(date: .now),
-            notes: ""
-        ),
-    ]
-    @Published var categories: [Category] = [
-        .init(id: "house", name: "House", icon: "house.fill"),
-        .init(id: "cat", name: "Cat", icon: "house.fill"),
-    ]
+    @Published var transactions: [Transaction] = []
+    @Published var categories: [Category] = []
     @Published var userData: UserData?
     
     @Published var showAddTransactionSheet: Bool = false

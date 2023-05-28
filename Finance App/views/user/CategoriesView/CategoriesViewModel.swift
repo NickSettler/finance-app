@@ -12,9 +12,7 @@ import FirebaseAuth
 @MainActor class CategoriesViewModel : ObservableObject {
     private(set) var currentUser: User?
     
-    @Published var categories: [Category] = [
-        .init(name: "abc", icon: "house.fill")
-    ]
+    @Published var categories: [Category] = []
     
     @Published var deletingCategory: Category?
     
