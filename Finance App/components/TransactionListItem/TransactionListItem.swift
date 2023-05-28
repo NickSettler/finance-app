@@ -20,7 +20,7 @@ struct TransactionListItem: View {
     }
     
     var body: some View {
-        HStack(alignment: .center, spacing: 8) {
+        HStack(alignment: .top, spacing: 8) {
             Image(systemName: "\(category.icon)")
                 .padding(8)
                 .frame(
