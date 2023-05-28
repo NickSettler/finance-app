@@ -201,9 +201,6 @@ struct TransactionsView: View {
                     .buttonStyle(.borderedProminent)
                 }
                 .padding(12)
-                .sheet(isPresented: $viewModel.isFilterSheetPresent) {
-                    filterSheet
-                }
                 
                 if viewModel.filteredTransactions.count == 0 {
                     List {
@@ -217,6 +214,10 @@ struct TransactionsView: View {
                     .scrollContentBackground(.hidden)
                 } else {
                     transactionsList
+                        .refreshable {
+                            viewModel.fetchCategories()
+                            viewModel.fetchTransactions()
+                        }
                 }
             }
             .background(Color.BackgroundColor)
@@ -224,9 +225,8 @@ struct TransactionsView: View {
                 viewModel.fetchCategories()
                 viewModel.fetchTransactions()
             }
-            .refreshable {
-                viewModel.fetchCategories()
-                viewModel.fetchTransactions()
+            .sheet(isPresented: $viewModel.isFilterSheetPresent) {
+                filterSheet
             }
         }
     }

@@ -78,30 +78,6 @@ struct HomeView: View {
                 viewModel.showAddTransactionSheet = true
             }
             .frame(maxWidth: .infinity)
-            .sheet(isPresented: $viewModel.showAddTransactionSheet) {
-                NavigationView {
-                    if #available(iOS 16.4, *) {
-                        AddTransactionSheet(transaction: .init(
-                            get: {
-                                .init(amount: 0, category: unknownCategory, name: "", timestamp: .init(date: .now))
-                            },
-                            set: { transaction in
-                                viewModel.createTransaction(transaction)
-                            })
-                        )
-                        .presentationBackground(.thinMaterial)
-                    } else {
-                        AddTransactionSheet(transaction: .init(
-                            get: {
-                                .init(amount: 0, category: unknownCategory, name: "", timestamp: .init(date: .now))
-                            },
-                            set: { transaction in
-                                viewModel.createTransaction(transaction)
-                            })
-                        )
-                    }
-                }
-            }
             
             Divider()
                 .frame(maxWidth: 1, maxHeight: 32)
@@ -296,11 +272,23 @@ struct HomeView: View {
                 }
             }
             .background(Color.BackgroundColor)
+            .refreshable {
+                viewModel.fetchCategories()
+                viewModel.fetchTransactions()
+                viewModel.fetchUserData()
+            }
         }
-        .refreshable {
-            viewModel.fetchCategories()
-            viewModel.fetchTransactions()
-            viewModel.fetchUserData()
+        .sheet(isPresented: $viewModel.showAddTransactionSheet) {
+            NavigationView {
+                AddTransactionSheet(transaction: .init(
+                    get: {
+                        .init(amount: 0, category: unknownCategory, name: "", timestamp: .init(date: .now))
+                    },
+                    set: { transaction in
+                        viewModel.createTransaction(transaction)
+                    })
+                )
+            }
         }
         .onAppear {
             viewModel.fetchCategories()
