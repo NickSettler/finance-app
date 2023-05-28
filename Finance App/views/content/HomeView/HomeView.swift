@@ -167,17 +167,23 @@ struct HomeView: View {
             .padding(.bottom, collapseCategoriesChart ? 0 : 12)
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            VStack(alignment: .center) {
-                PieChartView(
-                    values: Array(viewModel.chartValues.map { $0.value }),
-                    colors: generateColors(from: chartFromColor, to: chartToColor, steps: viewModel.chartValues.count),
-                    names: viewModel.chartValues.map { $0.key.name },
-                    size: 200
-                )
-            }
-            .frame(maxWidth: .infinity, maxHeight: collapseCategoriesChart ? 0 : .none, alignment: .center)
-            .if(collapseCategoriesChart) { view in
-                view.clipped()
+            if viewModel.chartValues.count == 0 {
+                Text("No \(categoriesChartMode ? "incomes" : "expenses") found")
+                    .foregroundColor(.TextColorSecondary)
+                    .frame(maxWidth: .infinity)
+            } else {
+                VStack(alignment: .center) {
+                    PieChartView(
+                        values: Array(viewModel.chartValues.map { $0.value }),
+                        colors: generateColors(from: chartFromColor, to: chartToColor, steps: viewModel.chartValues.count),
+                        names: viewModel.chartValues.map { $0.key.name },
+                        size: 200
+                    )
+                }
+                .frame(maxWidth: .infinity, maxHeight: collapseCategoriesChart ? 0 : .none, alignment: .center)
+                .if(collapseCategoriesChart) { view in
+                    view.clipped()
+                }
             }
         }
         .padding(.vertical, 16)
@@ -264,8 +270,10 @@ struct HomeView: View {
                             .padding(.horizontal, 16)
                             .padding(.top, 8)
                         
-                        chart
-                            .padding(.horizontal, 16)
+                        if viewModel.transactions.count > 0 {
+                            chart
+                                .padding(.horizontal, 16)
+                        }
                         
                         operations
                             .padding(.horizontal, 16)
