@@ -212,6 +212,10 @@ struct TransactionsView: View {
                     .background(Color.BackgroundColor)
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
+                    .refreshable {
+                        viewModel.fetchCategories()
+                        viewModel.fetchTransactions()
+                    }
                 } else {
                     transactionsList
                         .refreshable {
