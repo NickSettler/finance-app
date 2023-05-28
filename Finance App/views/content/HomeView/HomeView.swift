@@ -170,7 +170,10 @@ struct HomeView: View {
             if viewModel.chartValues.count == 0 {
                 Text("No \(categoriesChartMode ? "incomes" : "expenses") found")
                     .foregroundColor(.TextColorSecondary)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: collapseCategoriesChart ? 0 : .none, alignment: .center)
+                    .if(collapseCategoriesChart) { view in
+                        view.clipped()
+                    }
             } else {
                 VStack(alignment: .center) {
                     PieChartView(
