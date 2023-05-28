@@ -11,7 +11,7 @@ struct PieChartRows: View {
     var colors: [Color]
     var names: [String]
     var values: [Double]
-    var selectedIndex: Int?
+    @Binding var selectedIndex: Int?
     
     var body: some View {
         let total = values.reduce(0, +)
@@ -36,6 +36,16 @@ struct PieChartRows: View {
                     }
                 }
                 .padding(.vertical, 8)
+                .background(Color.BackgroundColor)
+                .onTapGesture {
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        if selectedIndex == i {
+                            selectedIndex = nil
+                        } else {
+                            selectedIndex = i
+                        }
+                    }
+                }
                 .overlay {
                     if selectedIndex != nil && selectedIndex != i {
                         Rectangle()
@@ -54,7 +64,7 @@ struct PieChartRows_Previews: PreviewProvider {
             colors: [Color.blue, Color.green, Color.orange],
             names: ["abc", "def", "hhh"],
             values: [1300, 500, 300],
-            selectedIndex: 1
+            selectedIndex: .constant(1)
         )
     }
 }

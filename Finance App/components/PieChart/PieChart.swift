@@ -90,7 +90,7 @@ struct PieChartView: View {
                     colors: colors,
                     names: names ?? values.indices.map{ String($0) },
                     values: values,
-                    selectedIndex: selectedIndex
+                    selectedIndex: $selectedIndex
                 )
             }
             .foregroundColor(Color.TextColorPrimary)
