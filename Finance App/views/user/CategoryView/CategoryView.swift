@@ -50,19 +50,33 @@ struct CategoryView: View {
         .background(Color.BackgroundColor)
         .navigationTitle(viewModel.editedCategory.name)
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(
-            leading: Button {
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                Text("Cancel")
-            },
-            trailing: Button {
-                viewModel.save()
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                Text("Save")
-            }
+        .gesture(
+            DragGesture(minimumDistance: 20, coordinateSpace: .global)
+                .onChanged { value in
+                    guard value.startLocation.x < 20,
+                          value.translation.width > 60 else {
+                        return
+                    }
+                    presentationMode.wrappedValue.dismiss()
+                }
         )
+        .toolbar {
+            ToolbarItemGroup(placement: .cancellationAction) {
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("Cancel")
+                }
+            }
+            ToolbarItemGroup(placement: .primaryAction) {
+                Button {
+                    viewModel.save()
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("Save")
+                }
+            }
+        }
     }
 }
 
