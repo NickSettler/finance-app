@@ -23,109 +23,109 @@ struct AddTransactionSheet: View {
     }()
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Name")
-                    .font(.headline)
-                    .foregroundColor(.TextColorPrimary)
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Name")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                    
+                    TextField("Name", text: $viewModel.currentTransaction.name)
+                        .textFieldStyle(RoundedTextFieldStyle())
+                }
                 
-                TextField("Name", text: $viewModel.currentTransaction.name)
-                    .textFieldStyle(RoundedTextFieldStyle())
-            }
-            
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Category")
-                    .font(.headline)
-                    .foregroundColor(.TextColorPrimary)
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .center, spacing: 20) {
-                        ForEach(viewModel.categories, id: \.id) { category in
-                            CategoryCircleItem(
-                                category: category,
-                                selected: viewModel.category == category
-                            )
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.15)) {
-                                    if viewModel.category == category {
-                                        viewModel.updateCategory(category: unknownCategory)
-                                    } else {
-                                        viewModel.updateCategory(category: category)
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Category")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .center, spacing: 20) {
+                            ForEach(viewModel.categories, id: \.id) { category in
+                                CategoryCircleItem(
+                                    category: category,
+                                    selected: viewModel.category == category
+                                )
+                                .onTapGesture {
+                                    withAnimation(.easeInOut(duration: 0.15)) {
+                                        if viewModel.category == category {
+                                            viewModel.updateCategory(category: unknownCategory)
+                                        } else {
+                                            viewModel.updateCategory(category: category)
+                                        }
                                     }
                                 }
                             }
+                            
+                            CategoryCircleItem(
+                                category: .init(name: "New", icon: "plus")
+                            )
+                            .onTapGesture {
+                                viewModel.addNewCategorySheetPresent = true
+                            }
                         }
-                        
-                        CategoryCircleItem(
-                            category: .init(name: "New", icon: "plus")
-                        )
-                        .onTapGesture {
-                            viewModel.addNewCategorySheetPresent = true
-                        }
+                        .padding(.horizontal, 16)
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, -16)
                 }
-                .padding(.horizontal, -16)
-            }
-            
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Amount")
-                    .font(.headline)
-                    .foregroundColor(.TextColorPrimary)
                 
-                TextField("Amount", value: $viewModel.currentTransaction.amount, formatter: amountFormatter)
-                    .textFieldStyle(RoundedTextFieldStyle())
-                    .keyboardType(.decimalPad)
-            }
-            
-            Picker("Direction", selection: $viewModel.direction) {
-                Text("Expense")
-                    .tag(false)
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Amount")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                    
+                    TextField("Amount", value: $viewModel.currentTransaction.amount, formatter: amountFormatter)
+                        .textFieldStyle(RoundedTextFieldStyle())
+                        .keyboardType(.decimalPad)
+                }
                 
-                Text("Income")
-                    .tag(true)
-            }
-            .pickerStyle(.segmented)
-            
-            DatePicker(
-                selection: .init(get: {
-                    return $viewModel.currentTransaction.timestamp.wrappedValue.dateValue()
-                }, set: { date in
-                    viewModel.currentTransaction.timestamp = .init(date: date)
-                }),
-                in: ...Date.now,
-                displayedComponents: .date
-            ) {
-                Text("Date")
-                    .font(.headline)
-                    .foregroundColor(.TextColorPrimary)
-            }
-            
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Notes")
-                    .font(.headline)
-                    .foregroundColor(.TextColorPrimary)
+                Picker("Direction", selection: $viewModel.direction) {
+                    Text("Expense")
+                        .tag(false)
+                    
+                    Text("Income")
+                        .tag(true)
+                }
+                .pickerStyle(.segmented)
                 
-                TextField("Notes", text: $viewModel.currentTransaction.notes ?? "", axis: .vertical)
-                    .textFieldStyle(RoundedTextFieldStyle())
-                    .lineLimit(4)
+                DatePicker(
+                    selection: .init(get: {
+                        return $viewModel.currentTransaction.timestamp.wrappedValue.dateValue()
+                    }, set: { date in
+                        viewModel.currentTransaction.timestamp = .init(date: date)
+                    }),
+                    in: ...Date.now,
+                    displayedComponents: .date
+                ) {
+                    Text("Date")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                }
+                
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Notes")
+                        .font(.headline)
+                        .foregroundColor(.TextColorPrimary)
+                    
+                    TextField("Notes", text: $viewModel.currentTransaction.notes ?? "", axis: .vertical)
+                        .textFieldStyle(RoundedTextFieldStyle())
+                        .lineLimit(4)
+                }
+                
+                Button {
+                    viewModel.save()
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text(viewModel.currentTransaction.id != nil ? "Update" : "Add")
+                        .font(.headline)
+                        .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Spacer()
             }
-            
-            Button {
-                viewModel.save()
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                Text(viewModel.currentTransaction.id != nil ? "Update" : "Add")
-                    .font(.headline)
-                    .padding(.vertical, 4)
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            
-            Spacer()
         }
-        .padding(16)
-        .background(Color.BackgroundColor)
         .navigationBarItems(
             leading: Button {
                 presentationMode.wrappedValue.dismiss()
@@ -139,6 +139,9 @@ struct AddTransactionSheet: View {
                 Text(viewModel.currentTransaction.id != nil ? "Update" : "Add")
             }
         )
+        .padding(16)
+        .background(Color.BackgroundColor)
+        .interactiveDismissDisabled()
         .sheet(isPresented: $viewModel.addNewCategorySheetPresent) {
             NavigationView {
                 CategoryView(category: .init(
@@ -149,6 +152,7 @@ struct AddTransactionSheet: View {
                     }
                 ))
             }
+            .presentationDetents([.medium])
         }
         .onAppear {
             viewModel.fetchCategories()
