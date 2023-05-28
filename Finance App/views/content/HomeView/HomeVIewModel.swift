@@ -56,6 +56,9 @@ import FirebaseAuth
             Array(self.transactions[..<min(self.transactions.count, 10)])
                 .sorted(by: \.timestamp.seconds, using: (>))
         }
+        set {
+            //
+        }
     }
     
     var chartValues: [(key: Category, value: Double)] {

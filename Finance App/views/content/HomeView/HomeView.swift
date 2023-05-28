@@ -234,12 +234,16 @@ struct HomeView: View {
     
     var operationsList : some View {
         VStack {
-            ForEach(viewModel.recentTransactions, id: \.id) { transaction in
-                TransactionListItem(
-                    transaction: transaction,
-                    categories: viewModel.categories
-                )
-                .padding(.bottom, 8)
+            ForEach($viewModel.recentTransactions, id: \.id) { $transaction in
+                NavigationLink {
+                    TransanctionView(transaction: $transaction)
+                } label: {
+                    TransactionListItem(
+                        transaction: transaction,
+                        categories: viewModel.categories
+                    )
+                    .padding(.bottom, 8)
+                }
             }
         }
     }
