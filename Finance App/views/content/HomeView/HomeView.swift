@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @AppStorage("isDarkMode") var isDarkMode: Bool = true
+    @AppStorage("collapseCategoriesChart") var collapseCategoriesChart: Bool = false
+    @AppStorage("categoriesChartMode") var categoriesChartMode: Bool = false
     
     @StateObject private var viewModel = HomeViewModel()
     
@@ -152,6 +154,67 @@ struct HomeView: View {
         .buttonStyle(.plain)
     }
     
+    var chart : some View {
+        let chartFromColor: UIColor = .init(red: 0.2, green: 0.44, blue: 0.25, alpha: 1)
+        let chartToColor: UIColor = .init(red: 0.39, green: 0.73, blue: 0.47, alpha: 1)
+        
+        return VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Menu() {
+                    Picker("Chart", selection: $categoriesChartMode) {
+                        Text("Income")
+                            .tag(true)
+                        
+                        Text("Expense")
+                            .tag(false)
+                    }
+                } label: {
+                    HStack(alignment: .center, spacing: 4) {
+                        Text("\(categoriesChartMode ? "Income" : "Expense") chart")
+                            .font(.headline)
+                        
+                        Image(systemName: "chevron.down")
+                            .font(.caption)
+                    }
+                    .fontWeight(.semibold)
+                    .foregroundColor(.TextColorPrimary)
+                }
+                
+                Spacer()
+                
+                Button {
+                    self.collapseCategoriesChart.toggle()
+                } label: {
+                    Image(systemName: !collapseCategoriesChart ? "eye.fill" : "eye.slash.fill")
+                }
+            }
+            .padding(.bottom, collapseCategoriesChart ? 0 : 12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            VStack(alignment: .center) {
+                PieChartView(
+                    values: Array(viewModel.chartValues.map { $0.value }),
+                    colors: generateColors(from: chartFromColor, to: chartToColor, steps: viewModel.chartValues.count),
+                    names: viewModel.chartValues.map { $0.key.name },
+                    size: 200
+                )
+            }
+            .frame(maxWidth: .infinity, maxHeight: collapseCategoriesChart ? 0 : .none, alignment: .center)
+            .if(collapseCategoriesChart) { view in
+                view.clipped()
+            }
+        }
+        .padding(.vertical, 16)
+        .padding(.horizontal, 20)
+        .frame(maxWidth: .infinity)
+        .clipped()
+        .background {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.ColorPrimary)
+                .shadow(color: .TextColorPrimary.opacity(0.08), radius: 8, y: 2)
+        }
+    }
+    
     var operations : some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .center, spacing: 8) {
@@ -216,10 +279,13 @@ struct HomeView: View {
                     Divider()
                         .overlay(Color.TextColorSecondary.opacity(0.3))
                     
-                    VStack(alignment: .center, spacing: 12) {
+                    VStack(alignment: .center, spacing: 24) {
                         actions
-                            .padding(.all, 16)
+                            .padding(.horizontal, 16)
                             .padding(.top, 8)
+                        
+                        chart
+                            .padding(.horizontal, 16)
                         
                         operations
                             .padding(.horizontal, 16)

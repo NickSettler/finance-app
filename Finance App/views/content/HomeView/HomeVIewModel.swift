@@ -5,12 +5,35 @@
 //  Created by Никита Моисеев on 26.05.2023.
 //
 
+import SwiftUI
 import Foundation
 import FirebaseAuth
 
 @MainActor class HomeViewModel : ObservableObject {
-    @Published var transactions: [Transaction] = []
-    @Published var categories: [Category] = []
+    @AppStorage("categoriesChartMode") var categoriesChartMode: Bool = false
+    
+    @Published var transactions: [Transaction] = [
+        .init(
+            id: "123",
+            amount: 120,
+            category: .init(id: "house", name: "House", icon: "house.fill"),
+            name: "Something",
+            timestamp: .init(date: .now),
+            notes: ""
+        ),
+        .init(
+            id: "123",
+            amount: 120,
+            category: .init(id: "cat", name: "Cat", icon: "house.fill"),
+            name: "Something",
+            timestamp: .init(date: .now),
+            notes: ""
+        ),
+    ]
+    @Published var categories: [Category] = [
+        .init(id: "house", name: "House", icon: "house.fill"),
+        .init(id: "cat", name: "Cat", icon: "house.fill"),
+    ]
     @Published var userData: UserData?
     
     @Published var showAddTransactionSheet: Bool = false
@@ -53,6 +76,17 @@ import FirebaseAuth
             Array(self.transactions[..<min(self.transactions.count, 10)])
                 .sorted(by: \.timestamp.seconds, using: (>))
         }
+    }
+    
+    var chartValues: [(key: Category, value: Double)] {
+        self.transactions.reduce(into: [:]) { result, transaction in
+            if categoriesChartMode && transaction.amount < 0 || !categoriesChartMode && transaction.amount > 0 { return }
+            
+            let category: Category = categories.first { transaction.category.documentID == $0.id } ?? unknownCategory
+            
+            result[category, default: 0] += abs(transaction.amount)
+        }
+        .sorted(by: \.value, using: (<))
     }
     
     init() {
