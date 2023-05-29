@@ -178,7 +178,7 @@ struct HomeView: View {
                 VStack(alignment: .center) {
                     PieChartView(
                         values: Array(viewModel.chartValues.map { $0.value }),
-                        colors: generateColors(from: chartFromColor, to: chartToColor, steps: viewModel.chartValues.count),
+                        colors: Array(viewModel.chartValues.map {$0.key.colorObject }),
                         names: viewModel.chartValues.map { $0.key.name },
                         size: 200
                     )

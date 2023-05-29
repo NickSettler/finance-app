@@ -13,6 +13,7 @@ import SwiftUI
     
     @Published var editedCategory: Category
     @Published var isSymbolPickerPresent: Bool = false
+    @Published var isColorPickerPresent: Bool = false
     
     init(category: Binding<Category>) {
         self.category = category

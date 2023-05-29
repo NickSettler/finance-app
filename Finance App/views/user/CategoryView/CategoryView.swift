@@ -14,6 +14,14 @@ struct CategoryView: View {
     
     @StateObject var viewModel: CategoryViewViewModel
     
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     init(category: Binding<Category>) {
         self._viewModel = StateObject(wrappedValue: CategoryViewViewModel(category: category))
     }
@@ -42,7 +50,33 @@ struct CategoryView: View {
                 
                 TextField("Name", text: $viewModel.editedCategory.name)
                     .textFieldStyle(RoundedTextFieldStyle())
+                
+                Button {
+                    viewModel.isColorPickerPresent = true
+                } label: {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(viewModel.editedCategory.colorObject)
+                        .padding(12)
+                        .frame(
+                            width: 44,
+                            height: 44
+                        )
+                        .background {
+                            RoundedRectangle(cornerRadius: 8)
+                                .strokeBorder(Color.TextColorSecondary, lineWidth: 2)
+                        }
+                }
+                .sheet(isPresented: $viewModel.isColorPickerPresent) {
+                    NavigationView {
+                        ColorPicker(
+                            colors: categoryColors,
+                            color: $viewModel.editedCategory.colorObject
+                        )
+                    }
+                }
             }
+            
+            
             
             Spacer()
         }
@@ -82,7 +116,12 @@ struct CategoryView: View {
 
 struct CategoryView_Previews: PreviewProvider {
     static var previews: some View {
-        var cat: Category = .init(id: "123", name: "Home", icon: "house.fill")
+        var cat: Category = .init(
+            id: "123",
+            name: "Home",
+            icon: "house.fill",
+            color: 0x00FF00
+        )
         
         NavigationView {
             CategoryView(category: .init(
