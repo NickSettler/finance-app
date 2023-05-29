@@ -68,7 +68,7 @@ struct PieChartView: View {
                         .frame(width: size * 0.8, height: size * 0.8)
                     
                     VStack {
-                        if let index = selectedIndex {
+                        if let index = selectedIndex, let index = index >= self.values.count ? nil : index {
                             Text(names?[index] ?? "")
                                 .font(.body)
                                 .foregroundColor(.TextColorSecondary)
@@ -90,7 +90,13 @@ struct PieChartView: View {
                     colors: colors,
                     names: names ?? values.indices.map{ String($0) },
                     values: values,
-                    selectedIndex: $selectedIndex
+                    selectedIndex: .init(get: {
+                        guard let index = self.selectedIndex else { return nil }
+                        
+                        return index >= self.values.count ? nil : index
+                    }, set: { index in
+                        self.selectedIndex = index
+                    })
                 )
             }
             .foregroundColor(Color.TextColorPrimary)
