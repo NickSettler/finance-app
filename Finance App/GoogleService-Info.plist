@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>70645877354-224j91ef8hf84ph9f81kdhu5ohb7s57f.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.70645877354-224j91ef8hf84ph9f81kdhu5ohb7s57f</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCHXACCG81N1pO_w56fGnwJeqZrLZhxs9o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>70645877354</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>tech.settler.financeapp</string>
+	<key>PROJECT_ID</key>
+	<string>ios-app-8c072</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ios-app-8c072.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:70645877354:ios:ce997ac8420d03edbb1813</string>
+</dict>
+</plist>
