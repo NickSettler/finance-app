@@ -138,9 +138,12 @@ struct UserMenuView: View {
         let headerHeight = size.height * 0.3 + safeArea.top
         let minimumHeaderHeight = 65 + safeArea.top
         
-        let progress = max(min(-viewModel.offsetY / (headerHeight - minimumHeaderHeight), 1), 0)
+        var progress = -viewModel.offsetY / (headerHeight - minimumHeaderHeight)
         
-        GeometryReader { _ in
+        progress = min(progress, 1)
+        progress = max(progress, 0)
+        
+        return GeometryReader { _ in
             ZStack {
                 Rectangle()
                     .fill(Color.Accent.gradient)
