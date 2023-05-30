@@ -33,7 +33,7 @@ struct PieSliceView: View {
                     
                 }
                 .fill(pieSliceData.color)
-                .scaleEffect(scaled ? 1.1 : 1)
+                .scaleEffect(scaled ? 1 : 0.95)
                 
                 Text(pieSliceData.text)
                     .font(.caption)
