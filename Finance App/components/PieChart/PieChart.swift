@@ -39,9 +39,6 @@ struct PieChartView: View {
     var body: some View {
         if values.count != colors.count || values.count != names?.count {
             Text("Wrong data")
-                .onAppear {
-                    print(values, colors, names ?? [])
-                }
         } else {
             VStack {
                 ZStack {

@@ -113,8 +113,6 @@ import FirebaseAuth
         selectedCategories = []
         
         isFilterSheetPresent = false
-        
-        print(self.transactions, self.filteredTransactions)
     }
     
     func deleteTransaction() {

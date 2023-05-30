@@ -64,8 +64,6 @@ struct UserService {
                 balance.advanced(by: transaction.amount * -1)
             }
             
-            print(newBalance)
-            
             var data = try await FirebaseService.shared.getOne(of: UserData.self, with: query, by: id).get()
             data.balance = newBalance
             
