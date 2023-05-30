@@ -27,7 +27,9 @@ struct ColorPicker: View {
                             .fill(color)
                             .padding(20)
                             .frame(maxWidth: .infinity, minHeight: 64)
-                            .background(Color(UIColor.systemGroupedBackground))
+                            .background(
+                                self.color == color ? Color.accentColor : Color(UIColor.systemBackground)
+                            )
                             .cornerRadius(8)
                             .foregroundColor(.primary)
                     }
@@ -46,6 +48,7 @@ struct ColorPicker: View {
                 }
             }
         }
+        .background(Color(UIColor.systemGroupedBackground))
     }
 }
 
@@ -54,7 +57,7 @@ struct ColorPicker_Previews: PreviewProvider {
         ColorPicker(
             colors: categoryColors,
             color: .init(get: {
-                return .black
+                return categoryColors[0]
             }, set: { color in
                 print(String(format: "%x", color.toHex() ?? 0))
             })
