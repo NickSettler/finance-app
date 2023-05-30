@@ -131,9 +131,6 @@ struct HomeView: View {
     }
     
     var chart : some View {
-        let chartFromColor: UIColor = .init(red: 0.2, green: 0.44, blue: 0.25, alpha: 1)
-        let chartToColor: UIColor = .init(red: 0.39, green: 0.73, blue: 0.47, alpha: 1)
-        
         return VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Menu() {
@@ -178,7 +175,7 @@ struct HomeView: View {
                 VStack(alignment: .center) {
                     PieChartView(
                         values: Array(viewModel.chartValues.map { $0.value }),
-                        colors: Array(viewModel.chartValues.map {$0.key.colorObject }),
+                        colors: viewModel.chartValues.map { $0.key.colorObject },
                         names: viewModel.chartValues.map { $0.key.name },
                         size: 200
                     )
