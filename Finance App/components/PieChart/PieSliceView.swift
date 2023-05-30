@@ -34,15 +34,6 @@ struct PieSliceView: View {
                 }
                 .fill(pieSliceData.color)
                 .scaleEffect(scaled ? 1 : 0.95)
-                
-                Text(pieSliceData.text)
-                    .font(.caption)
-                    .position(
-                        x: size * 0.5 * CGFloat(1.0 + 0.94 * cos(self.midRadians)),
-                        y: size * 0.5 * CGFloat(1.0 - 0.94 * sin(self.midRadians))
-                    )
-                    .foregroundColor(Color.TextColorPrimary)
-                    .opacity(scaled ? 1 : 0)
             }
             .aspectRatio(1, contentMode: .fit)
         }
