@@ -2,7 +2,7 @@
 //  Category.model.swift
 //  Finance App
 //
-//  Created by Никита Моисеев on 29.03.2023.
+//  Created by Nikita Moiseev on 29.03.2023.
 //
 
 import SwiftUI

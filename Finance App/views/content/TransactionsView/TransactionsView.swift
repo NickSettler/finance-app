@@ -2,7 +2,7 @@
 //  TransactionsView.swift
 //  Finance App
 //
-//  Created by Никита Моисеев on 24.05.2023.
+//  Created by Nikita Moiseev on 24.05.2023.
 //
 
 import SwiftUI

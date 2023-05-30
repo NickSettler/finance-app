@@ -2,7 +2,7 @@
 //  CategoryView.swift
 //  Finance App
 //
-//  Created by Никита Моисеев on 23.05.2023.
+//  Created by Nikita Moiseev on 23.05.2023.
 //
 
 import SwiftUI
@@ -69,7 +69,7 @@ struct CategoryView: View {
                 .sheet(isPresented: $viewModel.isColorPickerPresent) {
                     NavigationView {
                         ColorPicker(
-                            colors: categoryColors,
+                            colors: viewModel.availableColors,
                             color: $viewModel.editedCategory.colorObject
                         )
                     }
@@ -84,6 +84,9 @@ struct CategoryView: View {
         .background(Color.BackgroundColor)
         .navigationTitle(viewModel.editedCategory.name)
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            viewModel.fetchCategories()
+        }
         .gesture(
             DragGesture(minimumDistance: 20, coordinateSpace: .global)
                 .onChanged { value in
@@ -120,7 +123,7 @@ struct CategoryView_Previews: PreviewProvider {
             id: "123",
             name: "Home",
             icon: "house.fill",
-            color: 0x00FF00
+            color: Int(categoryColors[0].toHex() ?? 0)
         )
         
         NavigationView {

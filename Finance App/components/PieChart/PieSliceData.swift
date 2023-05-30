@@ -2,7 +2,7 @@
 //  PieSliceData.swift
 //  Finance App
 //
-//  Created by Никита Моисеев on 28.05.2023.
+//  Created by Nikita Moiseev on 28.05.2023.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  HomeVIew2Model.swift
 //  Finance App
 //
-//  Created by Никита Моисеев on 26.05.2023.
+//  Created by Nikita Moiseev on 26.05.2023.
 //
 
 import SwiftUI
