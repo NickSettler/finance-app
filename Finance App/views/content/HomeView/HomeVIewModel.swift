@@ -69,7 +69,7 @@ import FirebaseAuth
             
             result[category, default: 0] += abs(transaction.amount)
         }
-        .sorted(by: \.value, using: (<))
+        .sorted(by: \.value, using: (>))
     }
     
     init() {
