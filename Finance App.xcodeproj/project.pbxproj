@@ -76,6 +76,8 @@
 		6BB6A14A29CB53930004B1D5 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB6A14929CB53930004B1D5 /* MainViewModel.swift */; };
 		6BB6A15129CB650E0004B1D5 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB6A15029CB650E0004B1D5 /* MenuView.swift */; };
 		6BBA60862A267E1D00DB847E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6BBA60852A267E1D00DB847E /* GoogleService-Info.plist */; };
+		6BBA60A52A26B18400DB847E /* UserDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA60A42A26B18400DB847E /* UserDataView.swift */; };
+		6BBA60A72A26B19000DB847E /* UserDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA60A62A26B19000DB847E /* UserDataViewModel.swift */; };
 		6BC9D5002A141B6A00C9B31B /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC9D4FF2A141B6A00C9B31B /* ScrollDetector.swift */; };
 		6BFB87B329E604CD000CD72E /* ExpensesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFB87B229E604CD000CD72E /* ExpensesChart.swift */; };
 		6BFB87B529E6087F000CD72E /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFB87B429E6087F000CD72E /* TransactionService.swift */; };
@@ -148,6 +150,8 @@
 		6BB6A14929CB53930004B1D5 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		6BB6A15029CB650E0004B1D5 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		6BBA60852A267E1D00DB847E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6BBA60A42A26B18400DB847E /* UserDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataView.swift; sourceTree = "<group>"; };
+		6BBA60A62A26B19000DB847E /* UserDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataViewModel.swift; sourceTree = "<group>"; };
 		6BC9D4FF2A141B6A00C9B31B /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
 		6BFB87B229E604CD000CD72E /* ExpensesChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesChart.swift; sourceTree = "<group>"; };
 		6BFB87B429E6087F000CD72E /* TransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
@@ -340,6 +344,7 @@
 		6BAFA7B029CBB02D0051A34D /* user */ = {
 			isa = PBXGroup;
 			children = (
+				6BBA60A32A26B17000DB847E /* UserData */,
 				6B50881B2A2142860047DEAE /* AccountsView */,
 				6B3F417E2A1D629F007223B2 /* CategoryView */,
 				6BB144352A2237FD008CC944 /* AuthHistory */,
@@ -510,6 +515,15 @@
 			path = content;
 			sourceTree = "<group>";
 		};
+		6BBA60A32A26B17000DB847E /* UserData */ = {
+			isa = PBXGroup;
+			children = (
+				6BBA60A42A26B18400DB847E /* UserDataView.swift */,
+				6BBA60A62A26B19000DB847E /* UserDataViewModel.swift */,
+			);
+			path = UserData;
+			sourceTree = "<group>";
+		};
 		6BC9D4FE2A141B5800C9B31B /* helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -618,6 +632,7 @@
 				6B42B9FE29C52360003177DC /* ContentView.swift in Sources */,
 				6B3F418D2A1D9EB3007223B2 /* Sequence.swift in Sources */,
 				6BB144522A22BFBE008CC944 /* Binding.swift in Sources */,
+				6BBA60A52A26B18400DB847E /* UserDataView.swift in Sources */,
 				6BB144602A22CAE5008CC944 /* Colors.swift in Sources */,
 				6B42B9FC29C52360003177DC /* Finance_AppApp.swift in Sources */,
 				6BA3793C29CCB4BD00F1462F /* UserMenuViewModel.swift in Sources */,
@@ -634,6 +649,7 @@
 				6BB6A14829CB53830004B1D5 /* MainView.swift in Sources */,
 				6B3F41802A1D62B2007223B2 /* CategoryViewViewModel.swift in Sources */,
 				6BB30E2729C52B0500168438 /* LoginViewModel.swift in Sources */,
+				6BBA60A72A26B19000DB847E /* UserDataViewModel.swift in Sources */,
 				6BA728F72A1523AB00DC2EF3 /* MenuTabShape.swift in Sources */,
 				6BB144502A22838A008CC944 /* TransanctionViewModel.swift in Sources */,
 				6BB144622A22CBD0008CC944 /* UIColor.swift in Sources */,

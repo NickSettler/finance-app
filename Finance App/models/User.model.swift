@@ -37,4 +37,14 @@ struct UserData: FirebaseIdentifiable {
         case last_name
         case balance
     }
+    
+    var isEmpty: Bool {
+        get {
+            return self.first_name.isEmpty && self.last_name.isEmpty
+        }
+    }
+    
+    static func empty() -> UserData {
+        return .init(first_name: "", last_name: "", balance: 0)
+    }
 }

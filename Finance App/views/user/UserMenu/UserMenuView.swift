@@ -82,7 +82,7 @@ struct UserMenuView: View {
                                 Divider()
                                 
                                 menuListItem("User data", "person") {
-                                    HStack {}
+                                    UserDataView()
                                 }
                                 
                                 Divider()
