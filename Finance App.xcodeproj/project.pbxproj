@@ -26,8 +26,6 @@
 		6B42D76B29D47FC10054A9B3 /* CategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B42D76A29D47FC10054A9B3 /* CategoryService.swift */; };
 		6B42D76D29D48D180054A9B3 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B42D76C29D48D180054A9B3 /* CategoriesView.swift */; };
 		6B42D76F29D48D4F0054A9B3 /* CategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B42D76E29D48D4F0054A9B3 /* CategoriesViewModel.swift */; };
-		6B50881D2A2142980047DEAE /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B50881C2A2142980047DEAE /* AccountsView.swift */; };
-		6B50881F2A2142A00047DEAE /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B50881E2A2142A00047DEAE /* AccountsViewModel.swift */; };
 		6B5088232A2143740047DEAE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5088222A2143740047DEAE /* HomeView.swift */; };
 		6B5088252A214CD30047DEAE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5088242A214CD30047DEAE /* Color.swift */; };
 		6B50882B2A215C020047DEAE /* HomeVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B50882A2A215C020047DEAE /* HomeVIewModel.swift */; };
@@ -62,8 +60,6 @@
 		6BB1445A2A22C206008CC944 /* PieSliceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB144592A22C206008CC944 /* PieSliceData.swift */; };
 		6BB1445C2A22C22C008CC944 /* PieSliceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB1445B2A22C22C008CC944 /* PieSliceView.swift */; };
 		6BB1445E2A22C45E008CC944 /* PieChartRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB1445D2A22C45E008CC944 /* PieChartRows.swift */; };
-		6BB144602A22CAE5008CC944 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB1445F2A22CAE5008CC944 /* Colors.swift */; };
-		6BB144622A22CBD0008CC944 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB144612A22CBD0008CC944 /* UIColor.swift */; };
 		6BB144642A22E160008CC944 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB144632A22E160008CC944 /* View.swift */; };
 		6BB30E2129C5299B00168438 /* User.model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB30E2029C5299B00168438 /* User.model.swift */; };
 		6BB30E2429C52A1D00168438 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB30E2329C52A1D00168438 /* LoginView.swift */; };
@@ -79,10 +75,8 @@
 		6BBA60A52A26B18400DB847E /* UserDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA60A42A26B18400DB847E /* UserDataView.swift */; };
 		6BBA60A72A26B19000DB847E /* UserDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA60A62A26B19000DB847E /* UserDataViewModel.swift */; };
 		6BC9D5002A141B6A00C9B31B /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC9D4FF2A141B6A00C9B31B /* ScrollDetector.swift */; };
-		6BFB87B329E604CD000CD72E /* ExpensesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFB87B229E604CD000CD72E /* ExpensesChart.swift */; };
 		6BFB87B529E6087F000CD72E /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFB87B429E6087F000CD72E /* TransactionService.swift */; };
 		6BFB87B729E608D6000CD72E /* Transaction.model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFB87B629E608D6000CD72E /* Transaction.model.swift */; };
-		6BFB87B929E609BC000CD72E /* ExpensesChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFB87B829E609BC000CD72E /* ExpensesChartViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,8 +94,6 @@
 		6B42D76A29D47FC10054A9B3 /* CategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryService.swift; sourceTree = "<group>"; };
 		6B42D76C29D48D180054A9B3 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		6B42D76E29D48D4F0054A9B3 /* CategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModel.swift; sourceTree = "<group>"; };
-		6B50881C2A2142980047DEAE /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
-		6B50881E2A2142A00047DEAE /* AccountsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
 		6B5088222A2143740047DEAE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		6B5088242A214CD30047DEAE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		6B50882A2A215C020047DEAE /* HomeVIewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVIewModel.swift; sourceTree = "<group>"; };
@@ -136,8 +128,6 @@
 		6BB144592A22C206008CC944 /* PieSliceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieSliceData.swift; sourceTree = "<group>"; };
 		6BB1445B2A22C22C008CC944 /* PieSliceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieSliceView.swift; sourceTree = "<group>"; };
 		6BB1445D2A22C45E008CC944 /* PieChartRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRows.swift; sourceTree = "<group>"; };
-		6BB1445F2A22CAE5008CC944 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		6BB144612A22CBD0008CC944 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6BB144632A22E160008CC944 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		6BB30E2029C5299B00168438 /* User.model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.model.swift; sourceTree = "<group>"; };
 		6BB30E2329C52A1D00168438 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -153,10 +143,8 @@
 		6BBA60A42A26B18400DB847E /* UserDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataView.swift; sourceTree = "<group>"; };
 		6BBA60A62A26B19000DB847E /* UserDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataViewModel.swift; sourceTree = "<group>"; };
 		6BC9D4FF2A141B6A00C9B31B /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
-		6BFB87B229E604CD000CD72E /* ExpensesChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesChart.swift; sourceTree = "<group>"; };
 		6BFB87B429E6087F000CD72E /* TransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
 		6BFB87B629E608D6000CD72E /* Transaction.model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.model.swift; sourceTree = "<group>"; };
-		6BFB87B829E609BC000CD72E /* ExpensesChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesChartViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,15 +227,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		6B50881B2A2142860047DEAE /* AccountsView */ = {
-			isa = PBXGroup;
-			children = (
-				6B50881C2A2142980047DEAE /* AccountsView.swift */,
-				6B50881E2A2142A00047DEAE /* AccountsViewModel.swift */,
-			);
-			path = AccountsView;
-			sourceTree = "<group>";
-		};
 		6B5088202A21433E0047DEAE /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,7 +283,6 @@
 				6B50882F2A2169F60047DEAE /* AddTransactionSheet */,
 				6BA728FC2A1591BD00DC2EF3 /* CustomCorner */,
 				6BA728F32A151EC000DC2EF3 /* MenuTab */,
-				6BFB87B129E604B6000CD72E /* expenses-chart */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -317,7 +295,6 @@
 				6B5088242A214CD30047DEAE /* Color.swift */,
 				6BB144482A2262D1008CC944 /* Set.swift */,
 				6BB144512A22BFBE008CC944 /* Binding.swift */,
-				6BB144612A22CBD0008CC944 /* UIColor.swift */,
 				6BB144632A22E160008CC944 /* View.swift */,
 			);
 			path = extensions;
@@ -345,7 +322,6 @@
 			isa = PBXGroup;
 			children = (
 				6BBA60A32A26B17000DB847E /* UserData */,
-				6B50881B2A2142860047DEAE /* AccountsView */,
 				6B3F417E2A1D629F007223B2 /* CategoryView */,
 				6BB144352A2237FD008CC944 /* AuthHistory */,
 				6BB144372A22380D008CC944 /* UserMenu */,
@@ -528,18 +504,8 @@
 			isa = PBXGroup;
 			children = (
 				6BC9D4FF2A141B6A00C9B31B /* ScrollDetector.swift */,
-				6BB1445F2A22CAE5008CC944 /* Colors.swift */,
 			);
 			path = helpers;
-			sourceTree = "<group>";
-		};
-		6BFB87B129E604B6000CD72E /* expenses-chart */ = {
-			isa = PBXGroup;
-			children = (
-				6BFB87B229E604CD000CD72E /* ExpensesChart.swift */,
-				6BFB87B829E609BC000CD72E /* ExpensesChartViewModel.swift */,
-			);
-			path = "expenses-chart";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -627,13 +593,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BB144642A22E160008CC944 /* View.swift in Sources */,
-				6BFB87B929E609BC000CD72E /* ExpensesChartViewModel.swift in Sources */,
 				6BB144582A22C1DB008CC944 /* PieChart.swift in Sources */,
 				6B42B9FE29C52360003177DC /* ContentView.swift in Sources */,
 				6B3F418D2A1D9EB3007223B2 /* Sequence.swift in Sources */,
 				6BB144522A22BFBE008CC944 /* Binding.swift in Sources */,
 				6BBA60A52A26B18400DB847E /* UserDataView.swift in Sources */,
-				6BB144602A22CAE5008CC944 /* Colors.swift in Sources */,
 				6B42B9FC29C52360003177DC /* Finance_AppApp.swift in Sources */,
 				6BA3793C29CCB4BD00F1462F /* UserMenuViewModel.swift in Sources */,
 				6B5A862F2A24F1A900C55BA0 /* ColorPicker.swift in Sources */,
@@ -652,7 +616,6 @@
 				6BBA60A72A26B19000DB847E /* UserDataViewModel.swift in Sources */,
 				6BA728F72A1523AB00DC2EF3 /* MenuTabShape.swift in Sources */,
 				6BB144502A22838A008CC944 /* TransanctionViewModel.swift in Sources */,
-				6BB144622A22CBD0008CC944 /* UIColor.swift in Sources */,
 				6B87C94229CE90B700145DE8 /* FirebaseService.swift in Sources */,
 				6B50882B2A215C020047DEAE /* HomeVIewModel.swift in Sources */,
 				6B5088252A214CD30047DEAE /* Color.swift in Sources */,
@@ -670,7 +633,6 @@
 				6BB144422A2241D9008CC944 /* UpdateBalanceSheet.swift in Sources */,
 				6BB1444E2A228377008CC944 /* TransanctionView.swift in Sources */,
 				6BB144492A2262D1008CC944 /* Set.swift in Sources */,
-				6B50881D2A2142980047DEAE /* AccountsView.swift in Sources */,
 				6BFB87B529E6087F000CD72E /* TransactionService.swift in Sources */,
 				6BA3793F29CCB70700F1462F /* Strings.swift in Sources */,
 				6BB30E2129C5299B00168438 /* User.model.swift in Sources */,
@@ -683,9 +645,7 @@
 				6B87C94429CE91A000145DE8 /* UserService.swift in Sources */,
 				6BA728F92A15250500DC2EF3 /* MenuTabPosition.swift in Sources */,
 				6BB1445C2A22C22C008CC944 /* PieSliceView.swift in Sources */,
-				6B50881F2A2142A00047DEAE /* AccountsViewModel.swift in Sources */,
 				6B3F417D2A1D629C007223B2 /* CategoryView.swift in Sources */,
-				6BFB87B329E604CD000CD72E /* ExpensesChart.swift in Sources */,
 				6BA728FB2A158E7900DC2EF3 /* Account.model.swift in Sources */,
 				6B42D76D29D48D180054A9B3 /* CategoriesView.swift in Sources */,
 				6BAFA7BA29CBB6060051A34D /* MenuViewModel.swift in Sources */,
